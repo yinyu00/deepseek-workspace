@@ -1,0 +1,18 @@
+# FastGPT 应用配置（挂载到容器 /app/data/config/config.yaml）
+# 官方模板基础上按需微调；一般保持默认即可
+system:
+  name: FastGPT
+  tenant: FastGPT
+  description: 我的知识库
+  version: v4.9.13
+  exportDocsUrl: https://doc.fastai.site/docs/introduction
+
+# 文件上传限制（按需调大）
+file:
+  maxSize: 104857600          # 单文件 100MB
+  tokenExpireDays: 7
+
+# 分块参数（建库时可再调）
+docProcess:
+  chunkSize: 512              # 每块 token 数
+  chunkSplitter: \n\n         # 分隔符

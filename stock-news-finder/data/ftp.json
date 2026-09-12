@@ -1,0 +1,7 @@
+{
+  "_comment": "FTP 上传配置（export_sync.py 用）；url 填 Windows 主机 FTP 地址，如 ftp://192.168.1.100",
+  "url": "",
+  "user": "",
+  "pass": "",
+  "remote_dir": "stock-sync"
+}

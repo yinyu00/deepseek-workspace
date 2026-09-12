@@ -1,0 +1,14 @@
+本目录素材来自 Dungeon Crawl Stone Soup 的 rltiles 美术集。
+授权: CC0 1.0 Universal（部分早期作者条款亦允许任意使用与改编，
+详见 https://opengameart.org/content/dungeon-crawl-32x32-tiles 与
+DCSS 源码 tree crawl-ref/source/rltiles/CREDITS）。
+本项目按"接近英雄无敌3玩法复刻"用途做了缩放使用，未做修改性重绘。
+
+terrain_*.png / terrain 树木装饰: 16x16 Puny World Tileset
+作者 Shade (merchant-shade), 来源 opengameart.org, 授权 CC0。
+
+terrain_*.png / terrain 树木装饰: 16x16 Puny World Tileset
+作者 Shade (merchant-shade), 来源 opengameart.org, 授权 CC0。
+
+terrain_*.png / terrain 树木装饰: 16x16 Puny World Tileset
+作者 Shade (merchant-shade), 来源 opengameart.org, 授权 CC0。

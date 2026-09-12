@@ -1,0 +1,219 @@
+# ============================================================
+# FastGPT 知识库服务器 - Windows Docker 部署配置【最终版+Neo4j】
+# 更新：2026-08-28
+# 包含：fastgpt / mongo(副本集) / pg(pgvector) / redis
+#       / sandbox / aiproxy / aiproxy_pg / neo4j(新增)
+# 用法：docker compose up -d
+# ⚠️ 密码占位 randow_pwd 按需全局替换；首次部署后改动密码需 down -v 重建
+# ============================================================
+
+name: fastgpt
+
+services:
+  # ---------- FastGPT 主服务 ----------
+  fastgpt:
+    image: ghcr.io/labring/fastgpt:v4.9.13
+    container_name: fastgpt
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - fastgpt
+    depends_on:
+      mongo:
+        condition: service_healthy
+      pg:
+        condition: service_healthy
+      sandbox:
+        condition: service_started
+    environment:
+      - FASTGPT_MODE=production
+      - PORT=3000
+      # MongoDB（官方变量名 + 兼容名双保险）
+      - MONGODB_URI=mongodb://root:randow_pwd@mongo:27017/fastgpt?authSource=admin
+      - FASTGPT_MONGODB_URI=mongodb://root:randow_pwd@mongo:27017/fastgpt?authSource=admin
+      # PostgreSQL
+      - PG_URL=postgresql://postgres:randow_pwd@pg:5432/fastgpt
+      - FASTGPT_PG_URL=postgresql://postgres:randow_pwd@pg:5432/fastgpt
+      # Redis（登录会话）
+      - REDIS_URL=redis://default:randow_pwd@redis:6379
+      # Sandbox（文件解析）
+      - SANDBOX_URL=http://sandbox:3000
+      # AI Proxy（模型网关）
+      - AIPROXY_API_ENDPOINT=http://aiproxy:3000
+      - AIPROXY_API_TOKEN=aiproxy
+      # 三密钥（各一串随机字符）
+      - TOKEN_KEY=please_change_me_random_1
+      - ROOT_KEY=please_change_me_random_2
+      - FILE_TOKEN_KEY=please_change_me_random_3
+      # root 登录密码（注意：官方变量名无结尾 D）
+      - DEFAULT_ROOT_PSW=your_login_password_here
+      - FASTGPT_LOCAL_STORE_PATH=/app/data
+    volumes:
+      - fastgpt_data:/app/data
+      - ./config:/app/data/config:ro
+
+  # ---------- MongoDB（副本集模式，支持事务）----------
+  mongo:
+    image: mongo:7.0
+    container_name: fastgpt_mongo
+    restart: always
+    networks:
+      - fastgpt
+    command: mongod --keyFile /data/mongodb.key --replSet rs0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=randow_pwd
+    volumes:
+      - mongo_data:/data/db
+    entrypoint:
+      - bash
+      - -c
+      - |
+        openssl rand -base64 128 > /data/mongodb.key
+        chmod 400 /data/mongodb.key
+        chown 999:999 /data/mongodb.key
+        echo 'let isInited = 0
+        try { isInited = rs.status().ok } catch(e) { isInited = 0 }
+        if(!isInited){
+          rs.initiate({
+            _id: "rs0",
+            members: [ { _id: 0, host: "mongo:27017" } ]
+          })
+        }' > /data/initReplicaSet.js
+        exec docker-entrypoint.sh "$$@" &
+        until mongosh -u root -p randow_pwd --authenticationDatabase admin --eval "print('waited for connection')" &>/dev/null; do
+          echo "Waiting for MongoDB to start..."
+          sleep 2
+        done
+        mongosh -u root -p randow_pwd --authenticationDatabase admin /data/initReplicaSet.js || true
+        wait $$!
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------- PostgreSQL + pgvector ----------
+  pg:
+    image: pgvector/pgvector:0.8.0-pg15
+    container_name: fastgpt_pg
+    restart: always
+    networks:
+      - fastgpt
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=randow_pwd
+      - POSTGRES_DB=fastgpt
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------- Redis：登录会话 ----------
+  redis:
+    image: redis:7-alpine
+    container_name: fastgpt_redis
+    restart: always
+    networks:
+      - fastgpt
+    command: --requirepass randow_pwd
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "randow_pwd", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------- Sandbox：文件解析（PDF/Word）----------
+  sandbox:
+    container_name: sandbox
+    image: ghcr.io/labring/fastgpt-sandbox:v4.9.11
+    networks:
+      - fastgpt
+    restart: always
+
+  # ---------- AI Proxy：模型网关 ----------
+  aiproxy:
+    image: ghcr.io/labring/aiproxy:v0.1.7
+    container_name: aiproxy
+    restart: unless-stopped
+    depends_on:
+      aiproxy_pg:
+        condition: service_healthy
+    networks:
+      - fastgpt
+    ports:
+      - "3001:3000"
+    environment:
+      - ADMIN_KEY=aiproxy
+      - LOG_DETAIL_STORAGE_HOURS=1
+      - SQL_DSN=postgres://postgres:aiproxy@aiproxy_pg:5432/aiproxy
+      - RETRY_TIMES=3
+      - BILLING_ENABLED=false
+      - DISABLE_MODEL_CONFIG=true
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:3000/api/status']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------- AI Proxy 的数据库 ----------
+  aiproxy_pg:
+    image: pgvector/pgvector:0.8.0-pg15
+    container_name: aiproxy_pg
+    restart: unless-stopped
+    networks:
+      - fastgpt
+    volumes:
+      - aiproxy_pg_data:/var/lib/postgresql/data
+    environment:
+      TZ: Asia/Shanghai
+      POSTGRES_USER: postgres
+      POSTGRES_DB: aiproxy
+      POSTGRES_PASSWORD: aiproxy
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres', '-d', 'aiproxy']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------- Neo4j 图数据库【新增】----------
+  # 版本说明：5.26 是 LTS 长期支持版（GraphRAG 生态兼容最好）
+  # 想追新版可改 neo4j:2025.08-community（滚动更新版）
+  neo4j:
+    image: neo4j:5.26-community
+    container_name: fastgpt_neo4j
+    restart: always
+    networks:
+      - fastgpt
+    ports:
+      - "7474:7474"   # 浏览器管理界面（http://localhost:7474）
+      - "7687:7687"   # Bolt 协议（程序连接用）
+    environment:
+      - NEO4J_AUTH=neo4j/neo4j_pwd_change_me     # 改成你的密码（不能太简单）
+      # 内存限额（16GB 机器建议：heap 1G + pagecache 1G，防吃满）
+      - NEO4J_server_memory_heap_max__size=1G
+      - NEO4J_server_memory_heap_initial__size=512m
+      - NEO4J_server_memory_pagecache_size=1G
+      # APOC 常用过程库（GraphRAG/数据导入基本都要用）
+      - NEO4J_PLUGINS=["apoc"]
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - neo4j_import:/var/lib/neo4j/import   # CSV 导入目录（宿主机可放文件）
+
+networks:
+  fastgpt:
+    driver: bridge
+
+volumes:
+  fastgpt_data:
+  mongo_data:
+  pg_data:
+  aiproxy_pg_data:
+  neo4j_data:
+  neo4j_logs:
+  neo4j_import:

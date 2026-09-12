@@ -1,0 +1,82 @@
+=== 1/4 采集新闻 ===
+[ok] 东方财富-财经快讯: 200 条
+[skip] 未启用: 自定义JSON接口示例（启用后生效）
+[skip] 未启用: 本地文件示例（调试用）
+合计 200 条（去重后）→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/raw_news.json
+=== 2/4 构建词典 ===
+手动词典: 1636 只
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/data/stock_dict.json
+=== 3/4 LLM事件分类 ===
+预筛命中新闻 55/200 条，涉及 53 只候选
+  批次 1/7: 累计 8 条
+  批次 2/7: 累计 16 条
+  批次 3/7: 累计 24 条
+  批次 4/7: 累计 32 条
+  批次 5/7: 累计 40 条
+  批次 6/7: 累计 48 条
+  批次 7/7: 累计 55 条
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/llm_events.json（55 条分类结果）
+=== 4/4 匹配打分 ===
+LLM 增强层: 55 条新闻已分类
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/signal_report.md
+    8.8  600790 轻纺城
+    8.8  600267 海正药业
+    8.8  603087 甘李药业
+    8.8  600276 恒瑞医药
+    8.8  603605 珀莱雅
+    8.7  603367 辰欣药业
+    5.4  600984 建设机械
+    5.3  600309 万华化学
+    5.3  600596 新安股份
+    5.0  603083 剑桥科技
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/daily/20260824.md
+=== 1/4 采集新闻 ===
+[ok] 东方财富-财经快讯: 585 条
+[skip] 未启用: 自定义JSON接口示例（启用后生效）
+[skip] 未启用: 本地文件示例（调试用）
+合计 585 条（去重后）→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/raw_news.json
+归档 raw/20260825.json: 558 条
+=== 2/4 构建词典 ===
+手动词典: 1636 只
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/data/stock_dict.json
+=== 3/4 LLM事件分类 ===
+=== 1/4 采集新闻 ===
+[ok] 东方财富-财经快讯: 585 条
+[skip] 未启用: 自定义JSON接口示例（启用后生效）
+[skip] 未启用: 本地文件示例（调试用）
+合计 585 条（去重后）→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/raw_news.json
+归档 raw/20260825.json: 558 条
+=== 2/4 构建词典 ===
+手动词典: 1636 只
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/data/stock_dict.json
+=== 3/4 LLM事件分类 ===
+预筛命中新闻 101/585 条，涉及 107 只候选
+  批次 1/13: 累计 5 条
+  批次 2/13: 累计 13 条
+  批次 3/13: 累计 21 条
+  批次 4/13: 累计 29 条
+  批次 5/13: 累计 35 条
+  批次 6/13: 累计 43 条
+  批次 7/13: 累计 51 条
+  批次 8/13: 累计 59 条
+  批次 9/13: 累计 67 条
+  批次 10/13: 累计 72 条
+  批次 11/13: 累计 80 条
+  批次 12/13: 累计 88 条
+  批次 13/13: 累计 92 条
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/llm_events.json（92 条分类结果）
+=== 4/4 匹配打分 ===
+LLM 增强层: 92 条新闻已分类
+产品通道: 4 个产品词，4 个解析成功
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/output/signal_report.md
+   11.2  603296 华勤技术
+   10.4  600030 中信证券
+   10.4  600352 浙江龙盛
+   10.1  601869 长飞光纤
+    9.2  603958 哈森股份
+    9.1  603912 佳力图
+    9.0  600935 华塑股份
+    9.0  603618 杭电股份
+    8.9  603889 新澳股份
+    8.9  600094 大名城
+→ /Users/jinwei/ai/deepseek/harness/workspace/stock-news-finder/daily/20260825.md

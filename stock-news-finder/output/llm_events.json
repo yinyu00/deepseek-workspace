@@ -1,0 +1,2813 @@
+[
+ {
+  "id": 0,
+  "stocks": [
+   "000166:福田汽车"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅超出预期"
+ },
+ {
+  "id": 1,
+  "stocks": [
+   "603270:金帝股份"
+  ],
+  "event": "product",
+  "impact": 3,
+  "confidence": 0.8,
+  "reason": "投资建设智能制造项目"
+ },
+ {
+  "id": 2,
+  "stocks": [
+   "600188:兖矿能源"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 0.85,
+  "reason": "业绩大幅超出预期"
+ },
+ {
+  "id": 3,
+  "stocks": [
+   "002779:中坚科技"
+  ],
+  "event": "order",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "投资建设智能机器人产业化项目"
+ },
+ {
+  "id": 4,
+  "stocks": [
+   "600363:联创光电"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.9,
+  "reason": "可能被实施其他风险警示"
+ },
+ {
+  "id": 5,
+  "stocks": [
+   "002785:万里石"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.9,
+  "reason": "控股股东、实际控制人收到证监会立案通知书"
+ },
+ {
+  "id": 6,
+  "stocks": [
+   "002600:领益智造"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "业绩低于预期"
+ },
+ {
+  "id": 8,
+  "stocks": [
+   "600036:招商银行"
+  ],
+  "event": "policy",
+  "impact": 3,
+  "confidence": 0.8,
+  "reason": "AI算力投入"
+ },
+ {
+  "id": 9,
+  "stocks": [
+   "000625:长安汽车"
+  ],
+  "event": "earnings_beat",
+  "impact": -2,
+  "confidence": 0.7,
+  "reason": "业绩下降"
+ },
+ {
+  "id": 10,
+  "stocks": [
+   "601088:中国神华"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.9,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 11,
+  "stocks": [
+   "601985:中国核电"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "业绩下降"
+ },
+ {
+  "id": 12,
+  "stocks": [
+   "600587:新华医疗"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.7,
+  "reason": "业绩下降"
+ },
+ {
+  "id": 13,
+  "stocks": [
+   "000538:云南白药"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 14,
+  "stocks": [
+   "000858:五粮液"
+  ],
+  "event": "earnings_beat",
+  "impact": 3,
+  "confidence": 0.9,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 15,
+  "stocks": [
+   "601238:广汽集团"
+  ],
+  "event": "earnings_beat",
+  "impact": -3,
+  "confidence": 0.7,
+  "reason": "业绩亏损"
+ },
+ {
+  "id": 16,
+  "stocks": [
+   "688981:中芯国际"
+  ],
+  "event": "政策利好",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "IPO注册批文"
+ },
+ {
+  "id": 17,
+  "stocks": [
+   "600378:昊华科技",
+   "600359:新农开发"
+  ],
+  "event": "订单",
+  "impact": 3,
+  "confidence": 0.7,
+  "reason": "签署合作框架协议"
+ },
+ {
+  "id": 18,
+  "stocks": [
+   "300570:太辰光"
+  ],
+  "event": "负面",
+  "impact": -3,
+  "confidence": 0.6,
+  "reason": "亏损"
+ },
+ {
+  "id": 19,
+  "stocks": [
+   "605167:利柏特"
+  ],
+  "event": "回购",
+  "impact": -1,
+  "confidence": 0.5,
+  "reason": "股东减持"
+ },
+ {
+  "id": 20,
+  "stocks": [
+   "600177:雅戈尔"
+  ],
+  "event": "中性",
+  "impact": 0,
+  "confidence": 0.4,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 21,
+  "stocks": [
+   "300120:经纬辉开"
+  ],
+  "event": "中性",
+  "impact": 0,
+  "confidence": 0.3,
+  "reason": "股东变动"
+ },
+ {
+  "id": 22,
+  "stocks": [
+   "601985:中国核电"
+  ],
+  "event": "中性",
+  "impact": 0,
+  "confidence": 0.2,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 23,
+  "stocks": [
+   "601319:中国人保"
+  ],
+  "event": "中性",
+  "impact": 0,
+  "confidence": 0.1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 24,
+  "stocks": [
+   "000977:浪潮信息"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "显著增长"
+ },
+ {
+  "id": 25,
+  "stocks": [
+   "601456:国联民生"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 1,
+  "reason": "较高增长"
+ },
+ {
+  "id": 26,
+  "stocks": [
+   "000725:京东方A"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 1,
+  "reason": "大幅增长"
+ },
+ {
+  "id": 27,
+  "stocks": [
+   "601919:中远海控"
+  ],
+  "event": "earnings_miss",
+  "impact": -2,
+  "confidence": 1,
+  "reason": "利润下降"
+ },
+ {
+  "id": 28,
+  "stocks": [
+   "603353:和顺石油"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "显著增长"
+ },
+ {
+  "id": 29,
+  "stocks": [
+   "601919:中远海控"
+  ],
+  "event": "order",
+  "impact": 3,
+  "confidence": 1,
+  "reason": "大订单"
+ },
+ {
+  "id": 30,
+  "stocks": [
+   "002886:沃特股份"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 31,
+  "stocks": [
+   "000661:长春高新"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 32,
+  "stocks": [
+   "002594:比亚迪"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 33,
+  "stocks": [
+   "000426:兴业银锡"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 34,
+  "stocks": [
+   "002460:赣锋锂业"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "扭亏为盈"
+ },
+ {
+  "id": 35,
+  "stocks": [
+   "603269:海星股份"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 36,
+  "stocks": [
+   "601669:中国电建"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 37,
+  "stocks": [
+   "301266:宇邦新材"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 38,
+  "stocks": [
+   "600547:山东黄金"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 39,
+  "stocks": [
+   "300760:迈瑞医疗"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 40,
+  "stocks": [
+   "002352:顺丰控股"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 41,
+  "stocks": [
+   "601866:中远海发"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 42,
+  "stocks": [
+   "603975:商络电子"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 43,
+  "stocks": [
+   "603778:阳光电源"
+  ],
+  "event": "earnings_beat",
+  "impact": -2,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 44,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 45,
+  "stocks": [
+   "000301:东方盛虹"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 46,
+  "stocks": [
+   "002975:博杰股份"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 47,
+  "stocks": [
+   "603035:常熟汽饰"
+  ],
+  "event": "earnings_beat",
+  "impact": -2,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 48,
+  "stocks": [
+   "603629:利通电子"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅提升"
+ },
+ {
+  "id": 49,
+  "stocks": [
+   "603858:步长制药"
+  ],
+  "event": "negative",
+  "impact": -2,
+  "confidence": 1,
+  "reason": "利润下降"
+ },
+ {
+  "id": 50,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 51,
+  "stocks": [
+   "601186:中国铁建"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 52,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 53,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 54,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 55,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 56,
+  "stocks": [
+   "300475"
+  ],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "净买入金额较大"
+ },
+ {
+  "id": 57,
+  "stocks": [
+   "603998"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.9,
+  "reason": "净利润同比增长16.79%"
+ },
+ {
+  "id": 58,
+  "stocks": [
+   "603595"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.9,
+  "reason": "净利润同比下降7.24%"
+ },
+ {
+  "id": 59,
+  "stocks": [
+   "600559"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.9,
+  "reason": "净利润同比下降18.47%"
+ },
+ {
+  "id": 60,
+  "stocks": [
+   "603738"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.9,
+  "reason": "净利润同比增长129.93%"
+ },
+ {
+  "id": 61,
+  "stocks": [
+   "600958"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.9,
+  "reason": "净利润同比增长30.48%"
+ },
+ {
+  "id": 62,
+  "stocks": [
+   "600343"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "技改项目投资"
+ },
+ {
+  "id": 63,
+  "stocks": [
+   "603027"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.9,
+  "reason": "净利润同比增长15.85%"
+ },
+ {
+  "id": 64,
+  "stocks": [
+   "600929:雪天盐业"
+  ],
+  "event": "ma",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "重大资产重组"
+ },
+ {
+  "id": 65,
+  "stocks": [
+   "600023:浙能电力"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.7,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 66,
+  "stocks": [
+   "600436:片仔癀"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.6,
+  "reason": "利润下降"
+ },
+ {
+  "id": 67,
+  "stocks": [
+   "300972:万辰集团"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 68,
+  "stocks": [
+   "600150:中国船舶"
+  ],
+  "event": "order",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "大额订单"
+ },
+ {
+  "id": 69,
+  "stocks": [
+   "000545:金浦钛业"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.7,
+  "reason": "法律诉讼"
+ },
+ {
+  "id": 70,
+  "stocks": [
+   "603876:鼎胜新材"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "融资计划"
+ },
+ {
+  "id": 71,
+  "stocks": [
+   "600803:新奥股份"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.6,
+  "reason": "利润下降"
+ },
+ {
+  "id": 72,
+  "stocks": [
+   "301396:宏景科技"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 73,
+  "stocks": [
+   "600127:金健米业"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "亏损"
+ },
+ {
+  "id": 74,
+  "stocks": [
+   "603719:良品铺子"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 75,
+  "stocks": [
+   "002842:翔鹭钨业"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 76,
+  "stocks": [
+   "603719:良品铺子"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 77,
+  "stocks": [
+   "603127:昭衍新药"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 78,
+  "stocks": [
+   "603719:良品铺子"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 79,
+  "stocks": [
+   "603719:良品铺子"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 80,
+  "stocks": [
+   "601398:工商银行"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 81,
+  "stocks": [
+   "601328:交通银行"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 82,
+  "stocks": [
+   "300793:佳禾智能"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑严重"
+ },
+ {
+  "id": 83,
+  "stocks": [
+   "600191:华资实业"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 84,
+  "stocks": [
+   "300032:金龙机电"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩亏损"
+ },
+ {
+  "id": 85,
+  "stocks": [
+   "601380:中国太保"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 86,
+  "stocks": [
+   "000066:中国长城"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 87,
+  "stocks": [
+   "603958:哈森股份"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "扭亏为盈"
+ },
+ {
+  "id": 88,
+  "stocks": [
+   "600521:华海药业"
+  ],
+  "event": "product",
+  "impact": 3,
+  "confidence": 0.8,
+  "reason": "产品注册"
+ },
+ {
+  "id": 89,
+  "stocks": [
+   "301021:英诺激光"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.9,
+  "reason": "业绩超预期"
+ },
+ {
+  "id": 90,
+  "stocks": [
+   "601988:中国银行"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 91,
+  "stocks": [
+   "603833:欧派家居"
+  ],
+  "event": "negative",
+  "impact": -2,
+  "confidence": 0.7,
+  "reason": "利润大幅下降"
+ },
+ {
+  "id": 92,
+  "stocks": [
+   "600613:神奇制药"
+  ],
+  "event": "negative",
+  "impact": -1,
+  "confidence": 0.6,
+  "reason": "利润下降"
+ },
+ {
+  "id": 93,
+  "stocks": [
+   "600026:中远海能"
+  ],
+  "event": "earnings_beat",
+  "impact": 3,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 94,
+  "stocks": [
+   "603011:君正股份"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 0.9,
+  "reason": "业绩大幅增长"
+ },
+ {
+  "id": 95,
+  "stocks": [
+   "601939:邮储银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般财务数据"
+ },
+ {
+  "id": 96,
+  "stocks": [
+   "002266:浙富控股"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "净利润大幅增长"
+ },
+ {
+  "id": 97,
+  "stocks": [
+   "300124:汇川技术"
+  ],
+  "event": "earnings_beat",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "净利润轻微下降"
+ },
+ {
+  "id": 98,
+  "stocks": [
+   "600783:鲁信创投"
+  ],
+  "event": "earnings_beat",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "净利润轻微下降"
+ },
+ {
+  "id": 99,
+  "stocks": [
+   "002007:华兰生物"
+  ],
+  "event": "earnings_beat",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "净利润轻微下降"
+ },
+ {
+  "id": 100,
+  "stocks": [
+   "600392:盛和资源"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "净利润大幅增长"
+ },
+ {
+  "id": 101,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 102,
+  "stocks": [
+   "601881:中国银河"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "净利润大幅增长"
+ },
+ {
+  "id": 103,
+  "stocks": [
+   "000596:古井贡酒"
+  ],
+  "event": "earnings_beat",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "净利润轻微下降"
+ },
+ {
+  "id": 104,
+  "stocks": [
+   "000756:新华制药"
+  ],
+  "event": "product",
+  "impact": 3,
+  "confidence": 0.8,
+  "reason": "新产品注册"
+ },
+ {
+  "id": 105,
+  "stocks": [
+   "000901:航天科技"
+  ],
+  "event": "earnings_beat",
+  "impact": -2,
+  "confidence": 0.7,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 106,
+  "stocks": [
+   "000895:双汇发展"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.6,
+  "reason": "业绩轻微下滑"
+ },
+ {
+  "id": 107,
+  "stocks": [
+   "601021:春秋航空"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.5,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 108,
+  "stocks": [
+   "300783:三只松鼠"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.4,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 109,
+  "stocks": [
+   "002437:誉衡药业"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.3,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 110,
+  "stocks": [
+   "601021:春秋航空"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.2,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 111,
+  "stocks": [
+   "000938:紫光股份"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 0.9,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 112,
+  "stocks": [
+   "300043"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 113,
+  "stocks": [
+   "300043"
+  ],
+  "event": "order",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "融资成功"
+ },
+ {
+  "id": 114,
+  "stocks": [
+   "002025"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 115,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 116,
+  "stocks": [
+   "601021"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 117,
+  "stocks": [
+   "300672"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 118,
+  "stocks": [
+   "002612"
+  ],
+  "event": "earnings_beat",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "业绩下滑"
+ },
+ {
+  "id": 119,
+  "stocks": [
+   "600104"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 120,
+  "stocks": [
+   "000949:新乡化纤"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅提升"
+ },
+ {
+  "id": 121,
+  "stocks": [
+   "300058:蓝色光标"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅提升"
+ },
+ {
+  "id": 122,
+  "stocks": [
+   "002461:珠江啤酒"
+  ],
+  "event": "earnings_beat",
+  "impact": 3,
+  "confidence": 1,
+  "reason": "业绩小幅提升"
+ },
+ {
+  "id": 123,
+  "stocks": [
+   "603629:利通电子"
+  ],
+  "event": "negative",
+  "impact": -3,
+  "confidence": 1,
+  "reason": "业绩亏损"
+ },
+ {
+  "id": 124,
+  "stocks": [
+   "603045:福达合金"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 1,
+  "reason": "业绩大幅提升"
+ },
+ {
+  "id": 125,
+  "stocks": [],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "战略合作"
+ },
+ {
+  "id": 126,
+  "stocks": [
+   "603308:应流股份"
+  ],
+  "event": "earnings_beat",
+  "impact": 3,
+  "confidence": 1,
+  "reason": "业绩稳步增长"
+ },
+ {
+  "id": 127,
+  "stocks": [
+   "000100:TCL科技"
+  ],
+  "event": "earnings_beat",
+  "impact": 4,
+  "confidence": 1,
+  "reason": "业绩大幅提升"
+ },
+ {
+  "id": 128,
+  "stocks": [
+   "600023"
+  ],
+  "event": "negative",
+  "impact": -2,
+  "confidence": 0.8,
+  "reason": "利润大幅下降"
+ },
+ {
+  "id": 129,
+  "stocks": [
+   "600630"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "一般业绩增长"
+ },
+ {
+  "id": 130,
+  "stocks": [
+   "601328"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "轻微利润下降"
+ },
+ {
+  "id": 131,
+  "stocks": [
+   "600648"
+  ],
+  "event": "negative",
+  "impact": -2,
+  "confidence": 0.9,
+  "reason": "亏损扩大"
+ },
+ {
+  "id": 132,
+  "stocks": [
+   "601616"
+  ],
+  "event": "negative",
+  "impact": -2,
+  "confidence": 0.8,
+  "reason": "由盈转亏"
+ },
+ {
+  "id": 133,
+  "stocks": [
+   "000932"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.7,
+  "reason": "产品注册"
+ },
+ {
+  "id": 134,
+  "stocks": [
+   "603232"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "亏损收窄"
+ },
+ {
+  "id": 135,
+  "stocks": [
+   "600420"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "药品注册"
+ },
+ {
+  "id": 144,
+  "stocks": [
+   "600352",
+   "002407"
+  ],
+  "event": "neutral",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "化工ETF涨幅"
+ },
+ {
+  "id": 145,
+  "stocks": [
+   "001337"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.7,
+  "reason": "座谈交流"
+ },
+ {
+  "id": 146,
+  "stocks": [
+   "300476"
+  ],
+  "event": "negative",
+  "impact": -7,
+  "confidence": 0.9,
+  "reason": "港股下跌"
+ },
+ {
+  "id": 147,
+  "stocks": [
+   "002625"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "签署战略协议"
+ },
+ {
+  "id": 148,
+  "stocks": [
+   "601166"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.7,
+  "reason": "分红政策"
+ },
+ {
+  "id": 149,
+  "stocks": [
+   "603778"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.9,
+  "reason": "减持"
+ },
+ {
+  "id": 150,
+  "stocks": [
+   "603206"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "战略合作"
+ },
+ {
+  "id": 151,
+  "stocks": [
+   "301520"
+  ],
+  "event": "negative",
+  "impact": -20,
+  "confidence": 0.9,
+  "reason": "CRO概念下跌"
+ },
+ {
+  "id": 152,
+  "stocks": [
+   "688981:中芯国际"
+  ],
+  "event": "product",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "商标注册"
+ },
+ {
+  "id": 153,
+  "stocks": [
+   "603396:金辰股份"
+  ],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.9,
+  "reason": "涨停"
+ },
+ {
+  "id": 154,
+  "stocks": [
+   "002478:常宝股份"
+  ],
+  "event": "order",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "订单评审"
+ },
+ {
+  "id": 155,
+  "stocks": [
+   "600722:金牛化工",
+   "603566:福莱蒽特",
+   "002427:尤夫股份",
+   "600691:潞化科技",
+   "002460:红宝丽",
+   "600929:雪天盐业",
+   "000912:赤天化",
+   "002246:北化股份",
+   "000912:泸天化",
+   "600844:金煤科技"
+  ],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "板块异动"
+ },
+ {
+  "id": 156,
+  "stocks": [
+   "暂无"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "融资消息"
+ },
+ {
+  "id": 157,
+  "stocks": [
+   "300476:胜宏科技"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "成交额"
+ },
+ {
+  "id": 158,
+  "stocks": [
+   "002739:儒意电影"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "成立子公司"
+ },
+ {
+  "id": 159,
+  "stocks": [
+   "600048:保利发展",
+   "600323:华润置地"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "成立公司"
+ },
+ {
+  "id": 168,
+  "stocks": [
+   "601628"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 169,
+  "stocks": [
+   "603011"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 170,
+  "stocks": [
+   "300773"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 171,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 172,
+  "stocks": [
+   "000876"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 173,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 174,
+  "stocks": [
+   "300019"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 175,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 176,
+  "stocks": [
+   "300017",
+   "300024"
+  ],
+  "event": "product",
+  "impact": 2,
+  "confidence": 0.8,
+  "reason": "成立半导体科技公司含智能机器人业务"
+ },
+ {
+  "id": 177,
+  "stocks": [
+   "002252"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "广西莱士试生产阶段"
+ },
+ {
+  "id": 178,
+  "stocks": [
+   "601628"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "久期缺口减少"
+ },
+ {
+  "id": 179,
+  "stocks": [
+   "002582"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "门店升级"
+ },
+ {
+  "id": 180,
+  "stocks": [
+   "002582"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "胖东来渠道收入增长"
+ },
+ {
+  "id": 181,
+  "stocks": [
+   "601166"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "长定期存款置换"
+ },
+ {
+  "id": 182,
+  "stocks": [
+   "603029"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.9,
+  "reason": "农林牧渔产业链上涨"
+ },
+ {
+  "id": 183,
+  "stocks": [
+   "300750",
+   "300438"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "入股物理AI公司"
+ },
+ {
+  "id": 184,
+  "stocks": [
+   "300769:德方纳米"
+  ],
+  "event": "product",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 185,
+  "stocks": [
+   "300769:德方纳米"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 186,
+  "stocks": [
+   "300769:德方纳米"
+  ],
+  "event": "product",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "业绩增长"
+ },
+ {
+  "id": 187,
+  "stocks": [
+   "300570:太辰光"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 188,
+  "stocks": [
+   "688836:宇树科技"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 189,
+  "stocks": [
+   "601929:江苏银行"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 190,
+  "stocks": [
+   "603291:联合水务"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 191,
+  "stocks": [
+   "601231:环旭电子"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 192,
+  "stocks": [
+   "000888",
+   "000756",
+   "000524",
+   "000830",
+   "300859"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "板块整体表现"
+ },
+ {
+  "id": 193,
+  "stocks": [
+   "000716",
+   "300973",
+   "000523",
+   "300476",
+   "002158"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "板块整体表现"
+ },
+ {
+  "id": 194,
+  "stocks": [
+   "300024",
+   "300122",
+   "300272",
+   "300274",
+   "300378"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "合作项目"
+ },
+ {
+  "id": 195,
+  "stocks": [
+   "600250",
+   "300272"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "战略合作"
+ },
+ {
+  "id": 196,
+  "stocks": [
+   "300024",
+   "300122",
+   "300272",
+   "300274",
+   "300378"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "政策利好"
+ },
+ {
+  "id": 197,
+  "stocks": [
+   "300476"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "负面消息"
+ },
+ {
+  "id": 198,
+  "stocks": [
+   "300083",
+   "002407",
+   "002427",
+   "002430"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "产品/研发/获批进展"
+ },
+ {
+  "id": 199,
+  "stocks": [
+   "300456"
+  ],
+  "event": "neutral",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 208,
+  "stocks": [
+   "600360",
+   "300945"
+  ],
+  "event": "product",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "英伟达新一代Rubin平台量产"
+ },
+ {
+  "id": 209,
+  "stocks": [
+   "300438",
+   "300805",
+   "300816",
+   "300917"
+  ],
+  "event": "order",
+  "impact": 3,
+  "confidence": 0.7,
+  "reason": "算力租赁概念反弹"
+ },
+ {
+  "id": 210,
+  "stocks": [
+   "300378",
+   "300570",
+   "300672"
+  ],
+  "event": "earnings_beat",
+  "impact": 2,
+  "confidence": 0.6,
+  "reason": "FDE交付效率改善"
+ },
+ {
+  "id": 211,
+  "stocks": [
+   "300476"
+  ],
+  "event": "order",
+  "impact": 1,
+  "confidence": 0.5,
+  "reason": "海外订单落地"
+ },
+ {
+  "id": 212,
+  "stocks": [
+   "300973",
+   "300805",
+   "300816",
+   "300917"
+  ],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.6,
+  "reason": "电子特气概念拉升"
+ },
+ {
+  "id": 213,
+  "stocks": [
+   "600929"
+  ],
+  "event": "policy",
+  "impact": 1,
+  "confidence": 0.5,
+  "reason": "新型广电网络建设工程"
+ },
+ {
+  "id": 214,
+  "stocks": [
+   "300476"
+  ],
+  "event": "order",
+  "impact": 1,
+  "confidence": 0.5,
+  "reason": "在手订单饱满"
+ },
+ {
+  "id": 215,
+  "stocks": [
+   "300679",
+   "300438",
+   "300805",
+   "300816",
+   "300917"
+  ],
+  "event": "order",
+  "impact": 2,
+  "confidence": 0.6,
+  "reason": "PCB概念走强"
+ },
+ {
+  "id": 216,
+  "stocks": [
+   "002107",
+   "300274"
+  ],
+  "event": "product",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "产品概念走强"
+ },
+ {
+  "id": 217,
+  "stocks": [
+   "000560",
+   "002285",
+   "000011",
+   "000014"
+  ],
+  "event": "order",
+  "impact": 3,
+  "confidence": 0.7,
+  "reason": "房地产板块订单增加"
+ },
+ {
+  "id": 218,
+  "stocks": [
+   "002396",
+   "300272",
+   "601138",
+   "301165"
+  ],
+  "event": "order",
+  "impact": 4,
+  "confidence": 0.9,
+  "reason": "超节点概念订单活跃"
+ },
+ {
+  "id": 219,
+  "stocks": [
+   "300394",
+   "300620",
+   "300017",
+   "002460"
+  ],
+  "event": "product",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "CPO概念产品表现活跃"
+ },
+ {
+  "id": 220,
+  "stocks": [
+   "300378",
+   "300805",
+   "300620",
+   "300945"
+  ],
+  "event": "product",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "PTFE概念产品强势"
+ },
+ {
+  "id": 221,
+  "stocks": [
+   "002736",
+   "300454",
+   "300917",
+   "300972"
+  ],
+  "event": "order",
+  "impact": 4,
+  "confidence": 0.8,
+  "reason": "网络安全概念订单增加"
+ },
+ {
+  "id": 222,
+  "stocks": [
+   "600371",
+   "600267",
+   "002041",
+   "600127"
+  ],
+  "event": "order",
+  "impact": 3,
+  "confidence": 0.7,
+  "reason": "农业板块订单活跃"
+ },
+ {
+  "id": 223,
+  "stocks": [
+   "002025",
+   "300510",
+   "002953",
+   "002475"
+  ],
+  "event": "negative",
+  "impact": -4,
+  "confidence": 0.8,
+  "reason": "电网设备板块走弱"
+ },
+ {
+  "id": 224,
+  "stocks": [
+   "002354",
+   "300083",
+   "300214",
+   "300454"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "AI营销概念走高"
+ },
+ {
+  "id": 225,
+  "stocks": [
+   "300017",
+   "600436",
+   "002466",
+   "002437",
+   "600690",
+   "601919",
+   "601988"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "港股开盘表现"
+ },
+ {
+  "id": 226,
+  "stocks": [
+   "300918"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "自研高强传动腱绳小批量订单"
+ },
+ {
+  "id": 227,
+  "stocks": [
+   "300679"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "技术预研与储备"
+ },
+ {
+  "id": 228,
+  "stocks": [
+   "002267"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "输气量稳定增长"
+ },
+ {
+  "id": 229,
+  "stocks": [
+   "301575"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "机器人相关金属结构件订单量小"
+ },
+ {
+  "id": 230,
+  "stocks": [
+   "300996"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "数字员工产品试点应用"
+ },
+ {
+  "id": 231,
+  "stocks": [
+   "600127"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "粮油产品价格波动有限"
+ },
+ {
+  "id": 232,
+  "stocks": [
+   "301498:乖宝宠物"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 233,
+  "stocks": [
+   "000858:五粮液"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 234,
+  "stocks": [
+   "000875:电投绿能"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 235,
+  "stocks": [
+   "000523:红棉股份",
+   "000524:岭南控股",
+   "002508:老板电器"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 236,
+  "stocks": [
+   "002980:华盛昌"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 237,
+  "stocks": [
+   "002050:三花智控"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 238,
+  "stocks": [
+   "300722:壹快评"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 239,
+  "stocks": [
+   "301200:宇树科技"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 240,
+  "stocks": [
+   "300438:鹏辉能源"
+  ],
+  "event": "product",
+  "impact": 3,
+  "confidence": 0.8,
+  "reason": "海外市场储能需求"
+ },
+ {
+  "id": 241,
+  "stocks": [
+   "601066:中信建投"
+  ],
+  "event": "policy",
+  "impact": 4,
+  "confidence": 0.9,
+  "reason": "AI办公场景潜力大"
+ },
+ {
+  "id": 242,
+  "stocks": [
+   "02498.HK:速腾聚创"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "收入增长30.2%"
+ },
+ {
+  "id": 243,
+  "stocks": [
+   "002558:巨人网络"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "产品表现稳定"
+ },
+ {
+  "id": 244,
+  "stocks": [
+   "601066:中信证券"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "FDE交付效率改善"
+ },
+ {
+  "id": 245,
+  "stocks": [
+   "601066:华泰证券"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "算力基础设施链"
+ },
+ {
+  "id": 246,
+  "stocks": [
+   "002602:世纪华通"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "中期分红"
+ },
+ {
+  "id": 248,
+  "stocks": [
+   "601336"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "净利增长54%"
+ },
+ {
+  "id": 249,
+  "stocks": [
+   "300663"
+  ],
+  "event": "policy",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "量子科技"
+ },
+ {
+  "id": 250,
+  "stocks": [
+   "603296"
+  ],
+  "event": "order",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "国产算力"
+ },
+ {
+  "id": 251,
+  "stocks": [
+   "002980"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.7,
+  "reason": "产能提升"
+ },
+ {
+  "id": 252,
+  "stocks": [
+   "300476"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.6,
+  "reason": "股权结构调整"
+ },
+ {
+  "id": 253,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "未来产业发展"
+ },
+ {
+  "id": 254,
+  "stocks": [
+   "301021"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.6,
+  "reason": "人形机器人未来"
+ },
+ {
+  "id": 255,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "限售股解禁"
+ },
+ {
+  "id": 256,
+  "stocks": [
+   "601998:中信银行"
+  ],
+  "event": "ma",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "重大重组"
+ },
+ {
+  "id": 257,
+  "stocks": [
+   "002466:天齐锂业"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "股东变动"
+ },
+ {
+  "id": 258,
+  "stocks": [
+   "002466:天齐锂业"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.7,
+  "reason": "业绩增长但股价下跌"
+ },
+ {
+  "id": 259,
+  "stocks": [
+   "601600:中国铝业"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "业绩创历史新高"
+ },
+ {
+  "id": 260,
+  "stocks": [
+   "603778:国晟科技"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.8,
+  "reason": "亏损且股东减持"
+ },
+ {
+  "id": 261,
+  "stocks": [
+   "601689:拓普集团"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "营收增长但未提及股价或市场反应"
+ },
+ {
+  "id": 262,
+  "stocks": [
+   "601798:蓝科高新"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.9,
+  "reason": "净利大幅增长"
+ },
+ {
+  "id": 263,
+  "stocks": [
+   "600481:双良节能"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "营收增长但未提及股价或市场反应"
+ },
+ {
+  "id": 264,
+  "stocks": [
+   "603259"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "减持"
+ },
+ {
+  "id": 265,
+  "stocks": [
+   "000002"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "财报发布"
+ },
+ {
+  "id": 266,
+  "stocks": [
+   "603259"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "财报发布"
+ },
+ {
+  "id": 267,
+  "stocks": [
+   "603288"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "评级下调"
+ },
+ {
+  "id": 268,
+  "stocks": [
+   "600188"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "财报发布"
+ },
+ {
+  "id": 269,
+  "stocks": [
+   "603719"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "财报发布"
+ },
+ {
+  "id": 270,
+  "stocks": [
+   "002785"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "立案调查"
+ },
+ {
+  "id": 271,
+  "stocks": [
+   "601088"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "财报发布"
+ },
+ {
+  "id": 272,
+  "stocks": [
+   "601818"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "业绩大幅下滑"
+ },
+ {
+  "id": 273,
+  "stocks": [
+   "300122"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "业绩大幅下滑"
+ },
+ {
+  "id": 274,
+  "stocks": [
+   "601985"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "业绩一般"
+ },
+ {
+  "id": 275,
+  "stocks": [
+   "000333"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "业绩一般"
+ },
+ {
+  "id": 276,
+  "stocks": [
+   "000858"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "业绩一般"
+ },
+ {
+  "id": 277,
+  "stocks": [
+   "300124"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "业绩一般"
+ },
+ {
+  "id": 278,
+  "stocks": [
+   "601688"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 1,
+  "reason": "业绩一般"
+ },
+ {
+  "id": 279,
+  "stocks": [
+   "601238"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "业绩大幅下滑"
+ },
+ {
+  "id": 280,
+  "stocks": [
+   "601939"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 281,
+  "stocks": [
+   "600436"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 282,
+  "stocks": [
+   "601991"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 283,
+  "stocks": [
+   "601328"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 284,
+  "stocks": [
+   "300917"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 285,
+  "stocks": [
+   "000725"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 286,
+  "stocks": [
+   "300672"
+  ],
+  "event": "earnings_beat",
+  "impact": 5,
+  "confidence": 0.8,
+  "reason": "业绩大超预期"
+ },
+ {
+  "id": 287,
+  "stocks": [
+   "300017"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 0.5,
+  "reason": "负面"
+ },
+ {
+  "id": 288,
+  "stocks": [
+   "000425"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "净利润下降"
+ },
+ {
+  "id": 289,
+  "stocks": [
+   "601919"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "净利润下降"
+ },
+ {
+  "id": 290,
+  "stocks": [
+   "600029"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "净亏损增加"
+ },
+ {
+  "id": 291,
+  "stocks": [
+   "601959"
+  ],
+  "event": "earnings_beat",
+  "impact": -1,
+  "confidence": 0.8,
+  "reason": "净利润下降"
+ },
+ {
+  "id": 292,
+  "stocks": [
+   "000426"
+  ],
+  "event": "earnings_beat",
+  "impact": 1,
+  "confidence": 0.8,
+  "reason": "净利润显著增长"
+ },
+ {
+  "id": 293,
+  "stocks": [],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "一般资讯"
+ },
+ {
+  "id": 294,
+  "stocks": [
+   "300272"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "一次性收益"
+ },
+ {
+  "id": 295,
+  "stocks": [
+   "603011",
+   "603232"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.8,
+  "reason": "政策影响"
+ },
+ {
+  "id": 296,
+  "stocks": [
+   "300394"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "IPO审核"
+ },
+ {
+  "id": 297,
+  "stocks": [
+   "301039"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "反补贴反倾销初裁"
+ },
+ {
+  "id": 298,
+  "stocks": [
+   "301039"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "反补贴反倾销初裁"
+ },
+ {
+  "id": 299,
+  "stocks": [
+   "301039"
+  ],
+  "event": "negative",
+  "impact": -5,
+  "confidence": 1,
+  "reason": "反补贴反倾销初裁"
+ },
+ {
+  "id": 300,
+  "stocks": [
+   "300017"
+  ],
+  "event": "neutral",
+  "impact": 0,
+  "confidence": 0.5,
+  "reason": "政策影响评估"
+ }
+]

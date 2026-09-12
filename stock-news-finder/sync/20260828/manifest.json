@@ -1,0 +1,12 @@
+{
+ "date": "2026-08-28",
+ "counts": {
+  "news": 800,
+  "signals": 100,
+  "llm_events": 275,
+  "stocks": 4500,
+  "boards": 7
+ },
+ "exported_at": "2026-08-28 20:22:41",
+ "host": "JindeMacBook-Pro.local"
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "name": "东方财富-财经快讯",
+    "type": "eastmoney-fast",
+    "enabled": true
+  },
+  {
+    "name": "华尔街见闻",
+    "type": "wallstreetcn-live",
+    "channel": "global-channel",
+    "limit": 50,
+    "max_pages": 4,
+    "enabled": true
+  },
+  {
+    "name": "东财关键词搜索（宏观/地缘）",
+    "type": "eastmoney-search",
+    "per_word": 8,
+    "enabled": true
+  },
+  {
+    "name": "自定义JSON接口示例（启用后生效）",
+    "type": "http-json",
+    "url": "https://example.com/api/news",
+    "fields": { "title": "title", "body": "content", "time": "pub_time" },
+    "enabled": false
+  },
+  {
+    "name": "本地文件示例（调试用）",
+    "type": "file",
+    "path": "output/local_news.json",
+    "enabled": false
+  }
+]

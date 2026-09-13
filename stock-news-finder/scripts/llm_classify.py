@@ -13,7 +13,9 @@ import json
 import os
 import subprocess
 import sys
+import ssl
 import urllib.request
+import urllib.error
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目根 = scripts/ 上一级
 DICT = os.path.join(BASE, "data", "stock_dict.json")
@@ -70,8 +72,16 @@ def call_llm(prompt, key):
     }).encode()
     req = urllib.request.Request(API, data=body, headers={
         "Authorization": f"Bearer {key}", "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = json.loads(r.read().decode())
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data = json.loads(r.read().decode())
+    except urllib.error.URLError as e:
+        # 公司网络 TLS 拦截导致证书校验失败时, 降级跳过校验重试一次
+        if "CERTIFICATE_VERIFY_FAILED" not in str(e):
+            raise
+        ctx = ssl._create_unverified_context()
+        with urllib.request.urlopen(req, timeout=60, context=ctx) as r:
+            data = json.loads(r.read().decode())
     return data["choices"][0]["message"]["content"]
 
 

@@ -11,6 +11,9 @@ dsh-config/settings.yaml.bak
 yishan/
 yishan_print/
 
+# stock-news-finder 瞬态输出文件（每次运行覆盖，归档在 raw/ daily/）
+stock-news-finder/output/
+
 # 临时/缓存目录
 .tmp/
 .pylibs/

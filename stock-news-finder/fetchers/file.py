@@ -11,6 +11,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 import time
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # 项目根
@@ -90,7 +91,7 @@ def fetch(cfg: dict) -> list:
 
 
 def selftest() -> bool:
-    tmp = "/tmp/sn_file_selftest.json"
+    tmp = os.path.join(tempfile.gettempdir(), "sn_file_selftest.json")
     sample = [
         {"title": "测试新闻标题", "body": "这是测试正文。", "time": 1700000000, "url": "https://example.com/a"},
         {"title": "", "body": "无标题新闻的正文内容，标题应取正文前40字。", "time": "2024-01-01 08:00:00", "url": ""},

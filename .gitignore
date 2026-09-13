@@ -6,3 +6,11 @@ venv/
 node_modules/
 *.egg-info/
 dsh-config/settings.yaml.bak
+
+# yishan 业务数据目录 - 不同步到 GitHub
+yishan/
+yishan_print/
+
+# 临时/缓存目录
+.tmp/
+.pylibs/

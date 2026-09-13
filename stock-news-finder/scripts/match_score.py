@@ -22,6 +22,7 @@ SOURCE_NAMES = {
     "eastmoney-fast": "东方财富",
     "wallstreetcn": "华尔街见闻",
     "eastmoney-search": "东方财富搜索",
+    "zhihu-pins": "知乎·关注",
 }
 # LLM 事件类型 → 展示名（打分用 LLM 的 impact，这里只做中文名映射）
 LLM_EVENT_NAMES = {

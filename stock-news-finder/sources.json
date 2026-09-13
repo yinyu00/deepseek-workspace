@@ -19,6 +19,12 @@
     "enabled": true
   },
   {
+    "name": "知乎关注人想法",
+    "type": "zhihu-pins",
+    "limit": 20,
+    "enabled": true
+  },
+  {
     "name": "自定义JSON接口示例（启用后生效）",
     "type": "http-json",
     "url": "https://example.com/api/news",

@@ -10,7 +10,9 @@ import json
 import os
 import subprocess
 import sys
+import urllib.error
 import urllib.parse
+import urllib.request
 
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 KW_FILE = os.path.join(BASE, "data", "macro_keywords.txt")
@@ -48,10 +50,7 @@ def _search_one(keyword, page_size=8):
             "preTag": "<em>", "postTag": "</em>"}},
     }, ensure_ascii=False)
     url = SEARCH_API + urllib.parse.quote(param)
-    r = subprocess.run(["curl", "-s", "-m", "15", "-A", HEADERS_UA,
-                        "-H", "Referer: https://so.eastmoney.com/", url],
-                       capture_output=True, text=True)
-    s = r.stdout.strip()
+    s = _http_get(url)
     if not s.startswith("cb("):
         return []
     try:
@@ -59,6 +58,30 @@ def _search_one(keyword, page_size=8):
     except json.JSONDecodeError:
         return []
     return (d.get("result") or {}).get("cmsArticleWebOld") or []
+
+
+def _http_get(url):
+    """curl 子进程优先（Mac/D5 决策）；失败（Windows schannel TLS 拦截）降级 urllib+SSL。"""
+    r = subprocess.run(["curl", "-s", "-m", "15", "-A", HEADERS_UA,
+                        "-H", "Referer: https://so.eastmoney.com/", url],
+                       capture_output=True, text=True)
+    if r.returncode == 0 and r.stdout.strip():
+        return r.stdout.strip()
+    import ssl
+    req = urllib.request.Request(url, headers={
+        "User-Agent": HEADERS_UA, "Referer": "https://so.eastmoney.com/"})
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            return resp.read().decode("utf-8", "ignore").strip()
+    except ssl.SSLError:
+        pass
+    except urllib.error.URLError as e:
+        if not isinstance(getattr(e, "reason", None), ssl.SSLError):
+            raise
+    ctx = ssl._create_unverified_context()
+    ctx.set_ciphers("DEFAULT@SECLEVEL=1")
+    with urllib.request.urlopen(req, timeout=15, context=ctx) as resp:
+        return resp.read().decode("utf-8", "ignore").strip()
 
 
 def _tag(text, expand_groups):

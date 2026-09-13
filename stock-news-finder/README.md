@@ -64,6 +64,10 @@ python3 scripts/lookup.py 立讯精密       # 公司名查代码
 
 - 东财 push2 CDN 对本机不稳定：product_lookup.py 用 curl 子进程 + 代理/直连
   + 80/90 双节点全排列重试（urllib 直连常瞬断，勿改回）
+- 公司 TLS 拦截（Windows）：部分域名 curl(schannel) 握手直接失败（rc=35），
+  统一兜底策略 = curl 失败后降级 Python urllib + unverified + SECLEVEL=1
+  （zhihu_pins.py、eastmoney_search.py 已内置，新插件照抄 `_get_json`/`_http_get`）
+- 知乎：关注流/回答/文章接口匿名返回空或 401，仅「想法 pins」接口匿名可用（D17）
 
 ## companies.txt 格式
 
@@ -77,6 +81,7 @@ python3 scripts/lookup.py 立讯精密       # 公司名查代码
 
 type 支持：
 - `eastmoney-fast`：东财财经快讯（内置解析）
+- `zhihu-pins`：知乎关注人「想法」（清单 `data/zhihu_people.txt`，一行一人：`url_token 显示名`；匿名接口，回答/文章需登录暂不支持）
 - `http-json`：任意返回 JSON 数组的 HTTP 接口，`fields` 指定标题/正文/时间字段映射
 - `file`：本地 JSON/JSONL 文件（调试或离线数据用）
 

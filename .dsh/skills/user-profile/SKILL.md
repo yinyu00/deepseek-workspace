@@ -29,12 +29,28 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
 
 ## 机器环境
 
-- macOS（Apple Silicon），shell 是 zsh（`~/.zshrc`）
-- 包管理：pnpm / pnpx（dsh 通过 `pnpx @deepseek-ai/dsh web` 启动，端口 3080）
-- 系统开了全局代理（`ALL_PROXY` / `HTTP_PROXY` / `HTTPS_PROXY`），网络排查时记得这层
+### 当前主力机（Windows，2026-09-13 起）
+
+- Windows 11，用户 `jinwei`，普通权限（无管理员，服务操作/驱动安装需用户手动 UAC）
+- 工作区：`D:\ai\deepseek-harness\workspace`（git 仓库，远程 git@github.com:yinyu00/deepseek-workspace.git，SSH 已配好可直推）
+- Python 3.14（`python`，无 python3 命令；控制台需 `PYTHONIOENCODING=utf-8` 防 GBK 崩）
+- dsh 启动：`pnpx @deepseek-ai/dsh web`（端口 3080）
+- **网络有 TLS 拦截**（公司防火墙）：pip/curl/urllib 直连外网常失败；
+  git 已切 `http.sslBackend openssl`；python 调 API 需 SSL 降级重试（llm_classify.py 已内置）
+- 模型配置同步方式：**直接复制**（`Copy-Item dsh-config\settings.yaml $env:USERPROFILE\.dsh\settings.yaml`），
+  不用软链（mklink 需管理员）；DSH 实时读取无需重启
+- 已配置环境变量：`GLM_VISION_API_KEY`（setx 永久，2026-09-13 更新过新 Key）
+- 装的办公软件：WPS（无 MS Office）；标签打印机佳博 GP-1324D（USB，80×60mm 标签纸）
+- **yishan 箱单标签打印工具**：`yishan_print\箱单标签批量打印.exe`（C# WinForms 绿色单文件，
+  原生GDI直打，源码 src\LabelPrinter.cs，README 有完整说明）
+
+### 旧机（Mac Apple Silicon，备用参考）
+
+- shell 是 zsh（`~/.zshrc`），包管理 pnpm / pnpx
+- 系统开了全局代理（`ALL_PROXY` / `HTTP_PROXY` / `HTTPS_PROXY`）
 - 工作区：`/Users/jinwei/ai/deepseek/harness/workspace`
 - DSH 源码 checkout（只读参考）：`/Users/jinwei/git/github/deepseek-ai/deepseek-harness/`
-- `~/.npm` 曾有 root 属主权限问题（已修复，若 npx 报 EPERM 再查）
+- 环境恢复手册：workspace 根目录《环境切换.md》（Mac + Windows 双平台步骤）
 
 ## DSH 配置现状（~/.dsh/settings.yaml）
 
@@ -71,3 +87,9 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
   删除了 settingsNamespace/installSettingsSection 导出，启动即崩，已实测
   复现）。当前方案：base + web-app + dshmarket（可用）。用户选择等插件适配
   后手动检查：对比 npm 发布日期晚于 2026-09-03 再装
+- 2026-09-13 机器切换：主力机改为 Windows 11（详见"机器环境"），Mac 成备用。
+  当日完成：GitHub 仓库双向同步（SSH key 配好）、模型配置复制式同步、
+  GLM_VISION_API_KEY 换新 Key（setx）、yishan 标签打印工具上线、
+  stock-news-finder Windows 迁移跑通（file.py 跨平台修复、llm_classify.py
+  SSL降级、output/ 改为不入库）。数据断档：raw/daily 缺 2026-08-29 ~ 09-12
+  （游标只能回补约4个交易日）

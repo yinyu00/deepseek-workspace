@@ -30,7 +30,7 @@ OUT_DIR = os.path.join(BASE, "output")
 DAILY_DIR = os.path.join(BASE, "daily")
 
 # 强事件（可作推荐依据）；命中词与 LLM 事件名都对齐 match_score 的展示名
-STRONG_EVENTS = {"订单/合同", "政策利好", "业绩超预期", "并购重组", "回购增持", "产品进展"}
+STRONG_EVENTS = {"订单/合同", "政策利好", "业绩超预期", "并购重组", "回购增持", "产品进展", "资金异动", "机构调研"}
 NEG_EVENTS = {"负面"}
 CONTINUITY_DAYS = 3      # 连续性回看窗口（个信号文件）
 TOP_N = 15               # 报告明细条数

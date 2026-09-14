@@ -5,6 +5,26 @@
     "enabled": true
   },
   {
+    "name": "巨潮资讯-公司公告",
+    "type": "cninfo-announce",
+    "enabled": true,
+    "lookback_days": 3,
+    "_comment": "一手公告源:watchlist全量+全市场高价值类别关键词过滤"
+  },
+  {
+    "name": "东财-龙虎榜",
+    "type": "longhubang",
+    "enabled": true,
+    "_comment": "资金面验证:最近交易日榜单,净买方向+机构参与"
+  },
+  {
+    "name": "新浪财经-7x24快讯",
+    "type": "sina-live",
+    "enabled": true,
+    "max_pages": 20,
+    "_comment": "实时快讯(替代财联社,免费接口已关)"
+  },
+  {
     "name": "华尔街见闻",
     "type": "wallstreetcn-live",
     "channel": "global-channel",
@@ -28,7 +48,11 @@
     "name": "自定义JSON接口示例（启用后生效）",
     "type": "http-json",
     "url": "https://example.com/api/news",
-    "fields": { "title": "title", "body": "content", "time": "pub_time" },
+    "fields": {
+      "title": "title",
+      "body": "content",
+      "time": "pub_time"
+    },
     "enabled": false
   },
   {
@@ -36,5 +60,21 @@
     "type": "file",
     "path": "output/local_news.json",
     "enabled": false
+  },
+  {
+    "name": "互动易-董秘问答",
+    "type": "irm-qa",
+    "enabled": true,
+    "max_pages": 10,
+    "lookback_days": 3,
+    "_comment": "董秘官方口径,强信号关键词过滤(订单/产能/AI等)"
+  },
+  {
+    "name": "东财-机构调研",
+    "type": "org-survey",
+    "enabled": true,
+    "min_orgs": 3,
+    "lookback_days": 3,
+    "_comment": "机构关注度先行指标,>=3家机构,董事长接待标记"
   }
 ]

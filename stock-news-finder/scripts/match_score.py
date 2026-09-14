@@ -23,6 +23,11 @@ SOURCE_NAMES = {
     "wallstreetcn": "华尔街见闻",
     "eastmoney-search": "东方财富搜索",
     "zhihu-pins": "知乎·关注",
+    "cninfo-announce": "巨潮资讯",
+    "sina-live": "新浪7x24",
+    "longhubang": "龙虎榜",
+    "irm-qa": "互动易",
+    "org-survey": "机构调研",
 }
 # LLM 事件类型 → 展示名（打分用 LLM 的 impact，这里只做中文名映射）
 LLM_EVENT_NAMES = {
@@ -36,9 +41,14 @@ EVENT_RULES = [
     (r"(业绩预告|预增|净利[润润].{0,6}(增|翻)|超预期|创.{0,4}新高)", 3.0, "业绩超预期"),
     (r"(中标|获得.{0,8}订单|签署.{0,8}(合同|协议)|大单)", 2.5, "订单/合同"),
     (r"(回购|增持)", 2.0, "回购增持"),
+    (r"(分红|派息|利润分配)", 1.5, "分红派息"),
     (r"(并购|重组|借壳|收购)", 2.5, "并购重组"),
     (r"(涨停|大涨|飙升|暴涨)", 1.0, "已大涨(谨慎)"),
     (r"(下跌|暴跌|亏损|预减|减持|质押|立案|调查|处罚|退市)", -3.0, "负面"),
+    (r"(龙虎榜).{0,30}(净买入)", 2.0, "资金异动"),
+    (r"(龙虎榜).{0,30}(净卖出)", -2.0, "资金流出"),
+    (r"(\d+)家机构调研", 1.8, "机构调研"),
+    (r"互动易", 1.0, "互动易回复"),
 ]
 DECAY_HOURS = 72.0  # 时效半衰期：3 天
 
@@ -71,6 +81,12 @@ def decay(t):
         return 0.5
     hours = max((datetime.now() - t).total_seconds() / 3600.0, 0)
     return 0.5 ** (hours / DECAY_HOURS)
+
+
+def _name_from_body(text, code):
+    """词典外代码的公司名提取：匹配 body 中「名称（代码）」模式（巨潮公告 body 内置）。"""
+    m = re.search(r"([\u4e00-\u9fa5A-Za-z0-9·]{2,20})（" + code + "）", text)
+    return m.group(1) if m else None
 
 
 def classify(text):
@@ -145,10 +161,12 @@ def main():
             if term in text:
                 if code not in matched or matched[code][1] < w:
                     matched[code] = (term, w)
-        # 官方标注通道（东财 stockList）：权威性最高，权重 1.2；已有文本命中不降权
+        # 官方标注通道（东财 stockList / 巨潮公告）：权威性最高，权重 1.2。
+        # 词典外代码也收录（一手公告源可发现词典外公司），名称从 body「名称（代码）」提取。
+        # 只收 A 股股票代码段：沪 60/68、深 00/30；排除 ETF(15/51/56/58) 与北交所
         for code in n.get("stocks") or []:
             code = str(code).strip()
-            if len(code) == 6 and code.isdigit() and code in dict_codes:
+            if len(code) == 6 and code.isdigit() and code[:2] in ("60", "68", "00", "30"):
                 w = matched.get(code, (None, 0))[1]
                 if w < 1.2:
                     matched[code] = ("官方标注", 1.2)
@@ -170,6 +188,8 @@ def main():
             for item in llm_items:
                 for code in item.get("stocks", []) or []:
                     code = str(code).split(":")[0].strip().zfill(6)  # 容错 "600984:建设机械"
+                    if code[:2] not in ("60", "68", "00", "30"):
+                        continue  # 只收 A 股股票代码段，排除 ETF
                     if len(code) == 6 and code.isdigit():
                         matched.setdefault(code, (None, 1.0))
             events = [(
@@ -188,8 +208,12 @@ def main():
                     "score": 0.0, "pos": 0, "neg": 0,
                 })
                 if rec["name"] is None:
-                    rec["name"] = next((nm for tm, c, nm, _ in terms if c == code), code)
-                s = ew * conf * mw * d
+                    rec["name"] = (next((nm for tm, c, nm, _ in terms if c == code), None)
+                                   or _name_from_body(text, code) or code)
+                # 一手信息源权威加成：官方公告/交易所榜单/董秘口径/调研披露 > 新闻转述
+                auth = 1.5 if n.get("source") in (
+                    "cninfo-announce", "longhubang", "irm-qa", "org-survey") else 1.0
+                s = ew * conf * mw * d * auth
                 rec["score"] += s
                 if term == "官方标注":
                     channel = "官方标注"

@@ -17,3 +17,7 @@ stock-news-finder/output/
 # 临时/缓存目录
 .tmp/
 .pylibs/
+
+# 推送凭据(含 webhook/SendKey)与财报日历本地缓存 - 不入库
+stock-news-finder/data/push_config.json
+stock-news-finder/data/report_calendar_cache.json

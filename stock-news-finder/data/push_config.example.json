@@ -1,0 +1,6 @@
+{
+  "_comment": "复制本文件为 push_config.json 并填入真实凭据(push_config.json 已被 .gitignore 排除)。channel: wecom=企业微信群机器人(主通道,免费无日限) 或 serverchan=Server酱 Turbo(5条/天)。wecom 失败时自动回退 serverchan。",
+  "channel": "wecom",
+  "wecom_webhook": "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=你的群机器人key",
+  "serverchan_key": "SCT你的SendKey"
+}

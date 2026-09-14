@@ -17,6 +17,9 @@ import sys
 import urllib.parse
 from datetime import datetime
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from push_channels import push, load_config
+
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DAILY = os.path.join(BASE, "daily")
 API = "https://sctapi.ftqq.com/{key}.send"
@@ -54,28 +57,19 @@ def build_content(date):
 
 
 def push(key, title, content):
-    data = urllib.parse.urlencode({"title": title, "desp": content}).encode()
-    # 走系统代理（外网接口）；curl 比 urllib 兼容性好
-    r = subprocess.run(
-        ["curl", "-s", "-m", "20", "-X", "POST", "-d", data.decode(), API.format(key=key)],
-        capture_output=True, text=True)
-    return r.stdout
+    """已废弃,保留签名兼容;实际走 push_channels(见 main)。"""
+    raise NotImplementedError("use push_channels.push")
 
 
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--") and not a == "20260825" or a.isdigit()]
     date = next((a for a in sys.argv[1:] if a.isdigit() and len(a) == 8), datetime.now().strftime("%Y%m%d"))
-    key = get_key()
-    if not key:
-        print("[err] 无 SERVERCHAN_SENDKEY（sct.ftqq.com 扫码获取，写入 ~/.zshrc）")
-        sys.exit(1)
     title, content = build_content(date)
     if not content:
         print(f"[err] 日报不存在: daily/{date}.md（先跑 scripts/run.sh）")
         sys.exit(1)
-    resp = push(key, title, content)
-    ok = '"code":0' in resp or '"errno":0' in resp
-    print(("✅ 推送成功" if ok else "❌ 推送失败") + f" → {resp[:200]}")
+    cfg = load_config(serverchan=get_key())
+    ok = push(title, content, cfg)
     sys.exit(0 if ok else 1)
 
 

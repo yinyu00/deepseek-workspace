@@ -93,3 +93,8 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
   stock-news-finder Windows 迁移跑通（file.py 跨平台修复、llm_classify.py
   SSL降级、output/ 改为不入库）。数据断档：raw/daily 缺 2026-08-29 ~ 09-12
   （游标只能回补约4个交易日）
+- 2026-09-14 服务操作经验：本机 DoSvc（Delivery Optimization）用 `sc config`
+  改配置即使管理员也报错误5（SCM 层保护，非注册表 ACL）；绕过方法=管理员
+  PowerShell 直接 `Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\DoSvc
+  Start=4`，工具脚本 workspace\disable_dosvc.ps1（纯 ASCII——PS 5.1 按 GBK
+  读无 BOM 的 UTF-8 脚本会乱码炸语法）。大版本更新可能重置，重跑即可

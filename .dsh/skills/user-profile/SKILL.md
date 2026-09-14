@@ -98,8 +98,15 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
   PowerShell 直接 `Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\DoSvc
   Start=4`，工具脚本 workspace\disable_dosvc.ps1（纯 ASCII——PS 5.1 按 GBK
   读无 BOM 的 UTF-8 脚本会乱码炸语法）。大版本更新可能重置，重跑即可
-- 2026-09-14 桌面美化：快捷方式小箭头已去除，方法是管理员重命名
-  `HKCR\lnkfile\IsShortcut` → `IsShortcut.bak`（工具脚本
-  workspace\remove_shortcut_arrow.ps1，内含撤销逻辑）。注意：Shell Icons\29
-  空白图标法在本机效果差（图标被拉伸遮盖），已弃用；恢复=把 .bak 改回原名；
-  功能更新可能重置需重跑。另：git push 在沙箱内因 ssh 命名管道被禁需提权重试
+- 2026-09-14 桌面美化：快捷方式小箭头已去除，**最终成功方法**=
+  管理员设置 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons`
+  的字符串值 `29` = `C:\Windows\System32\shell32.dll,-50`（系统自带空白图标资源），
+  然后清 IconCache（%LOCALAPPDATA%\IconCache.db + Explorer\iconcache*）并重启
+  explorer。工具脚本 workspace\fix_arrow_overlay_v4.ps1。**踩坑记录**：
+  ① 重命名/删 `HKCR\lnkfile\IsShortcut` 在 Win11 26100 会让任务栏固定项报
+  "没有关联的应用"（桌面不受影响），勿用；② 自定义透明 ico 会被 Explorer 判
+  无效回退默认箭头（v2 白块=掩码写反，v3 全透明=回退），先试系统资源再考虑
+  自制。恢复箭头=删 Shell Icons\29。功能更新可能重置，重跑 v4 脚本即可。
+  另：git push 在沙箱内因 ssh 命名管道被禁需提权重试
+- 2026-09-14 web_search 不可用（DEEPSEEK_API_KEY 未配），离线知识答新版
+  Windows 玄学问题容易绕弯，优先让用户配 key 或先问用户要参考方案

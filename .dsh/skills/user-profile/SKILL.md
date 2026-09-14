@@ -108,5 +108,6 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
   无效回退默认箭头（v2 白块=掩码写反，v3 全透明=回退），先试系统资源再考虑
   自制。恢复箭头=删 Shell Icons\29。功能更新可能重置，重跑 v4 脚本即可。
   另：git push 在沙箱内因 ssh 命名管道被禁需提权重试
-- 2026-09-14 web_search 不可用（DEEPSEEK_API_KEY 未配），离线知识答新版
-  Windows 玄学问题容易绕弯，优先让用户配 key 或先问用户要参考方案
+- 2026-09-14 web_search 已可用（DEEPSEEK_API_KEY 已由用户在 Models 页配好并
+  验证）。此前不可用期间离线答新版 Windows 玄学问题容易绕弯——同类问题以后
+  先搜索再动手

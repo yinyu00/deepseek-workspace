@@ -20,6 +20,8 @@ stock-news-finder/
 │   ├── import_sz.py      # 深市公司全量导入
 │   ├── llm_classify.py   # LLM 事件分类
 │   ├── match_score.py    # 匹配打分 + 日报生成
+│   ├── recommend.py      # 推荐层：信号提纯 + 三档推荐（★强推/★关注/★观察）
+│   ├── review.py         # 验证层：次日行情复盘 + 分档命中率累计统计
 │   ├── lookup.py         # 公司名→代码查询工具
 │   └── product_lookup.py # 产品词→板块成分股工具
 ├── fetchers/             # 采集器插件（SPEC.md 为接口规范）
@@ -40,10 +42,34 @@ stock-news-finder/
 
 ```bash
 cd stock-news-finder
-scripts/run.sh                          # 全流程：采集 → 词典 → LLM分类 → 打分报告
+scripts/run.sh                          # 全流程：采集 → 词典 → LLM分类 → 打分 → 推荐 → 推送 → 日历 → 复盘
+python3 scripts/recommend.py            # 单跑推荐层（读最新 signals）
+python3 scripts/review.py               # 单跑复盘（拉东财行情回看最近一份推荐）
 python3 scripts/import_sz.py            # 深市词典导入（已导入过则幂等跳过）
 python3 scripts/lookup.py 立讯精密       # 公司名查代码
 ```
+
+## 推荐层说明（recommend.py）
+
+信号漏斗之上的最后一层，回答「今天真正值得研究哪几只」：
+
+- **信号提纯**：仅靠产品传导（板块联动蹭热点）命中的股票不进推荐，
+  单独列「板块联动池」——解决旧日报 TOP30 被同分板块股刷屏的噪声问题
+- **事件分级**：强事件（订单/政策/业绩/并购/回购/产品进展）才作推荐依据，
+  弱事件（一般资讯/机构评级）只作热度
+- **交叉验证**：≥2 个独立新闻源的正面信号加成（单一来源易是软文）
+- **连续性加成**：近 3 个信号文件反复出现 → 热度持续标记
+- **三档输出**：★★★ 强推（强事件≥2 + 交叉验证）/ ★★ 关注（有强事件）/
+  ★ 观察（其余正分）；负面主导进「回避区」
+- 产物：`output/recommend_yyyymmdd.json` + `daily/recommend_yyyymmdd.md`
+
+## 验证层说明（review.py）
+
+- 次日拉东财 push2 批量行情（curl 子进程 + 代理/直连 + 多节点重试），
+  回看昨日各档推荐的实际涨跌
+- 命中口径：涨幅 > 0 计命中；分档统计当日 + 累计命中率/平均涨幅
+  （`output/review_stats.json`），用于后续调推荐阈值
+- 产物：`daily/review_yyyymmdd.md`
 
 ## LLM 分类层说明
 

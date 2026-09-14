@@ -56,9 +56,10 @@ def build_content(date):
     return title, md
 
 
-def push(key, title, content):
-    """已废弃,保留签名兼容;实际走 push_channels(见 main)。"""
-    raise NotImplementedError("use push_channels.push")
+def push(title, md, cfg=None):
+    """转发到 push_channels.push（签名对齐 main 的调用）。"""
+    import push_channels
+    return push_channels.push(title, md, cfg)
 
 
 def main():

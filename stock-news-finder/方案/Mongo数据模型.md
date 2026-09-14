@@ -6,19 +6,19 @@
 
 ## 1. 同步架构
 
-```
-Mac (stock-news-finder)                Windows 宿主机
-┌──────────────────────┐    FTP    ┌─────────────────────────────┐
-│ run.sh 5 步（不变）    │           │ sync/ 目录（FTP 落盘点）      │
-│ 第 6 步 export_sync   │ ────────→ │  20260826/news.jsonl 等      │
-│  打包 JSONL + 上传     │  curl -T  │                             │
-└──────────────────────┘           │ import_to_mongo.py（手动/计划 │
-                                   │  任务触发，幂等 upsert）        │
-                                   └──────────┬──────────────────┘
-                                              │ pymongo
-                                   ┌──────────▼──────────────────┐
-                                   │ MongoDB（docker，独立库 stock）│
-                                   └─────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph Mac [Mac · stock-news-finder]
+        A[run.sh 5 步不变<br/>+ 第 6 步 export_sync<br/>打包 JSONL]
+    end
+    subgraph Win [Windows 宿主机]
+        B[sync/ 目录 · FTP 落盘点<br/>20260826/news.jsonl 等]
+        C[import_to_mongo.py<br/>手动/计划任务触发<br/>幂等 upsert]
+        D[(MongoDB<br/>docker · 独立库 stock)]
+    end
+    A -- "FTP · curl -T" --> B
+    B --> C
+    C -- pymongo --> D
 ```
 
 - 连接串（Windows 侧）：`mongodb://root:<pwd>@localhost:27017/stock?authSource=admin`

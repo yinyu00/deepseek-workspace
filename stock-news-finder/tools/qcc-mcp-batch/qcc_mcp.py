@@ -53,16 +53,69 @@ except (AttributeError, ValueError):
 ROOT = Path(__file__).parent
 CFG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
 
-# Token 友好校验：萌新如果没填 token，给一个清楚的提示而不是后面接口报 401
-for _srv, _info in CFG.get("mcpServers", {}).items():
-    _auth = _info.get("headers", {}).get("Authorization", "")
-    if "YOUR_TOKEN_HERE" in _auth or _auth.strip() in ("Bearer", "Bearer ", ""):
-        print(
-            "\n[配置错误] config.json 里的 Authorization 还没填 Token。\n"
-            "  请打开同目录的 config.json，把 4 处 'YOUR_TOKEN_HERE' 替换成你自己的企查查 MCP Token。\n"
-            "  Token 在企查查 agent 平台（agent.qcc.com）登录后获取，4 个 server 用同一个 token 即可。\n"
-        )
-        sys.exit(1)
+# ---------------- Token 池（多账号按序耗尽，2026-09-15） ----------------
+# 优先读 config.json 顶层 "tokens": ["token1", "token2"]（推荐，多账号放多个）；
+# 未配置时回退收集 mcpServers 各 Authorization 里的 token（单号旧行为）。
+# 语义：按序耗尽——先用第 1 个号，300008 积分不足自动切下一个；401 无效凭证永久跳过。
+_raw_pool = [t for t in CFG.get("tokens", []) if t and "YOUR_TOKEN_HERE" not in t]
+if not _raw_pool:
+    _seen = set()
+    for _srv, _info in CFG.get("mcpServers", {}).items():
+        _t = _info.get("headers", {}).get("Authorization", "").replace("Bearer", "").strip()
+        if _t and "YOUR_TOKEN_HERE" not in _t and _t not in _seen:
+            _seen.add(_t)
+            _raw_pool.append(_t)
+
+TOKENS = _raw_pool
+_token_idx = 0          # 当前激活 token 下标
+_token_dead = set()     # 永久失效的 token 下标（401）
+_token_lock = threading.Lock()
+
+
+def active_token():
+    with _token_lock:
+        return TOKENS[_token_idx] if _token_idx < len(TOKENS) else None
+
+
+def switch_token(from_idx: int, dead: bool = False) -> bool:
+    """推进到下一个可用 token。from_idx != 当前下标（别的线程已切）时不重复推进，
+    返回 True 直接复用新 token；dead=True 标记 from_idx 永久失效。全耗尽返回 False。"""
+    with _token_lock:
+        if dead:
+            _token_dead.add(from_idx)
+        if from_idx != _token_idx:
+            return True
+        for nxt in range(from_idx + 1, len(TOKENS)):
+            if nxt not in _token_dead:
+                _token_idx = nxt
+                break
+        else:
+            return False
+        return True
+
+
+def token_status() -> str:
+    with _token_lock:
+        tail = TOKENS[_token_idx][-6:] if _token_idx < len(TOKENS) else "无"
+        return f"token[{_token_idx + 1}/{len(TOKENS)}](尾号…{tail})"
+
+
+def _reapply_token_clients():
+    """所有缓存 client 换新 token 并要求重新握手。"""
+    with _clients_lock:
+        for c in _clients.values():
+            c._apply_token()
+
+
+# Token 友好校验：完全没配 token 时给清楚提示而不是 401
+if not TOKENS:
+    print(
+        "\n[配置错误] 没有可用的企查查 MCP Token。\n"
+        "  方式一（推荐）：config.json 顶层加 \"tokens\": [\"你的Token\"]（多账号放多个，按序耗尽自动切换）。\n"
+        "  方式二：把 mcpServers 里 4 处 Authorization 的 YOUR_TOKEN_HERE 换成你的 Token。\n"
+        "  Token 在企查查 agent 平台（agent.qcc.com）登录后获取。\n"
+    )
+    sys.exit(1)
 
 INPUT_CSV = ROOT / "qcc_search_list.csv"
 OUT_DIR = ROOT / "qcc_data_mcp"
@@ -275,6 +328,9 @@ class MCPClient:
             "Accept": "application/json, text/event-stream",
             **cfg.get("headers", {}),
         })
+        # Token 池激活项覆盖静态 headers（多账号切换的核心）
+        if TOKENS:
+            self.session.headers["Authorization"] = "Bearer " + (active_token() or "")
         self._req_id = 0
         self._lock = threading.Lock()
         self._initialized = False
@@ -327,6 +383,13 @@ class MCPClient:
             return None
         return r.json()
 
+    def _apply_token(self):
+        """切换 token 后调用：更新鉴权头并强制下次重新握手。"""
+        tok = active_token()
+        if tok:
+            self.session.headers["Authorization"] = "Bearer " + tok
+            self._initialized = False
+
     def initialize(self):
         with self._lock:
             if self._initialized:
@@ -368,6 +431,19 @@ class MCPClient:
                         time.sleep(sleep_t)
                         last_err = err
                         continue
+                    # ---- Token 池切换（2026-09-15）：积分不足按序换号，无效凭证永久跳过 ----
+                    if "300008" in msg or "积分" in msg:
+                        if switch_token(_token_idx):
+                            self._apply_token(); _reapply_token_clients()
+                            print(f"[token] 积分不足 → 已切换 {token_status()}")
+                            continue
+                        return {"_error": f"所有 token 积分耗尽: {err}"}
+                    if "401" in msg or "unauthorized" in msg.lower():
+                        if switch_token(_token_idx, dead=True):
+                            self._apply_token(); _reapply_token_clients()
+                            print(f"[token] 凭证无效 → 已切换 {token_status()}")
+                            continue
+                        return {"_error": f"所有 token 均无效: {err}"}
                     return {"_error": err}
                 return resp.get("result", {})
             except Exception as e:
@@ -538,6 +614,7 @@ def _parse_manual_entity(raw: str) -> dict:
 
 
 def main():
+    print(f"[token] 当前使用 {token_status()}")
     ap = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--test", action="store_true", help="只跑名单前 5 条")
     ap.add_argument("--start", type=int, default=0)

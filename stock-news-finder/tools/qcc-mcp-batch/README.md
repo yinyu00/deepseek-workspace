@@ -24,25 +24,23 @@ pip install requests
 
 ### 步骤 2：填 Token（重要！）
 
-打开同目录下的 `config.json`，把里面 4 处 `YOUR_TOKEN_HERE` 替换成你自己的企查查 MCP Token。
-
-> Token 在企查查 agent 平台（agent.qcc.com）登录后获取，4 个 server 用同一个 token 即可。
-
-填完之后 `config.json` 应该长这样：
+**推荐：Token 池写法**（支持多账号，2026-09-15 起）——config.json 顶层加 `tokens` 数组：
 
 ```json
 {
-  "mcpServers": {
-    "qcc-company": {
-      "url": "https://agent.qcc.com/mcp/company/stream",
-      "headers": {
-        "Authorization": "Bearer 你的真实Token贴这里"
-      }
-    },
-    ...其他 3 个 server 同理
-  }
+  "tokens": [
+    "第一个账号的Token",
+    "第二个账号的Token（没有就删掉这行）"
+  ],
+  "mcpServers": { ... 原 4 个 server 配置不动 ... }
 }
 ```
+
+多账号语义：**按序耗尽**——先用第 1 个号的积分，收到 `300008 积分不足` 自动切下一个；
+`401 无效凭证` 的 token 永久跳过。切换有并发保护，断点续爬无缝衔接。
+
+**兼容旧写法**：不配 `tokens` 时，把 mcpServers 里 4 处 `YOUR_TOKEN_HERE` 换成自己的
+Token（agent.qcc.com 登录获取，4 个 server 用同一个 token）同样有效。
 
 ### 步骤 3：准备名单 CSV
 
@@ -233,6 +231,7 @@ py qcc_mcp.py --merge
 | `code 100002: 暂不支持境外IP请求`                        | 你开着 VPN / 代理 / Tailscale     | 关掉代理（或在 Clash 里把 `*.qcc.com` 加 DIRECT 直连规则）后重跑     |
 | `SSL EOF` / `400 Bad Request`                          | cold start 并发竞态               | 脚本自动重试 3 次，一般能恢复；偶发几条可以 `--merge` 后看缺哪条重跑 |
 | `code 300008: 当前积分余额不足`                          | 积分耗尽                          | 充值后直接重跑，断点续爬自动跳过已完成                                 |
+| `多个账号怎么用` | 见步骤 2 `tokens` 数组 | 按序耗尽自动切换；`_progress.json` 断点续爬让换号续跑零成本 |
 | 所有维度"无匹配项"                                         | USCC/名称错误或该实体不在企查查库 | 核对企业名全称或补一个准确 USCC                                        |
 | 控制台中文乱码                                             | Windows 代码页非 UTF-8            | 跑前 `chcp 65001`，或看 `qcc_data_mcp/_log.txt`（始终 UTF-8）      |
 

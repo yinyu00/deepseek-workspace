@@ -47,7 +47,20 @@ python3 scripts/recommend.py            # 单跑推荐层（读最新 signals）
 python3 scripts/review.py               # 单跑复盘（拉东财行情回看最近一份推荐）
 python3 scripts/import_sz.py            # 深市词典导入（已导入过则幂等跳过）
 python3 scripts/lookup.py 立讯精密       # 公司名查代码
+python3 scripts/legal_check.py          # 法人风险：TOP30 画像拉取 + 待核清单生成
+python3 scripts/legal_check.py --result output/legal_pending_日期.md   # 人工核查结果入库 + 附录表
 ```
+
+## 法人司法风险层（P0 · 半自动）
+
+- 数据链路：`signals` TOP30 → 东财 F10 拿法人/信用代码（7 天缓存）→
+  `output/legal_pending_日期.md` 待核清单 → **人工查执行网**（失信/被执行/限高，
+  验证码人点，结果按 `代码|法人|类型|案号|标的|立案日|原因` 格式回填）→
+  `--result` 导入 → Mongo `stock` 库 + 4 列附录表 `output/legal_risk_日期.md`
+- Mongo 表模型：`legal_companies`（画像，_id=股票代码）、`legal_risks`
+  （唯一键 code+risk_type+case_no）、`legal_checks`（运行日志）；
+  连接读 `MONGODB_URI`，不可用自动降级 `data/legal_fallback.jsonl`
+- 「无风险」记录写进画像的 last_checked（7 天内免重查），风险记录永久累积
 
 ## 互动易 / 机构调研通道（2026-09-14 上线，批次二）
 

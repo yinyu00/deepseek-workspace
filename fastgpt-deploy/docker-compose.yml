@@ -60,6 +60,9 @@ services:
     restart: always
     networks:
       - fastgpt
+    # 宿主机映射（仅本机）：供 stock-news-finder 等本地脚本用独立库 stock
+    ports:
+      - "127.0.0.1:27017:27017"
     command: mongod --keyFile /data/mongodb.key --replSet rs0
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root

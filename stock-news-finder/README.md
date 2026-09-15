@@ -51,16 +51,23 @@ python3 scripts/legal_check.py          # 法人风险：TOP30 画像拉取 + �
 python3 scripts/legal_check.py --result output/legal_pending_日期.md   # 人工核查结果入库 + 附录表
 ```
 
-## 法人司法风险层（P0 · 半自动）
+## 法人司法风险层（三级防线）
 
-- 数据链路：`signals` TOP30 → 东财 F10 拿法人/信用代码（7 天缓存）→
-  `output/legal_pending_日期.md` 待核清单 → **人工查执行网**（失信/被执行/限高，
-  验证码人点，结果按 `代码|法人|类型|案号|标的|立案日|原因` 格式回填）→
-  `--result` 导入 → Mongo `stock` 库 + 4 列附录表 `output/legal_risk_日期.md`
-- Mongo 表模型：`legal_companies`（画像，_id=股票代码）、`legal_risks`
+| 级别 | 通道 | 方式 | 状态 |
+|---|---|---|---|
+| **P0.5 自动** | 巨潮 searchkey 司法风险公告（`cninfo-legal`，2026-09-15 上线）：诉讼/冻结/破产重整/司法拍卖全文搜索，30 天窗口 | 公司自披露 → 负面事件（诉讼仲裁-2.5/资产风险-3.0）→ 推荐回避区 | ✅ 91条/30天，78 只股自动预警 |
+| **P0 半自动** | legal_check.py（2026-09-15 上线）：`signals` TOP30 → 东财 F10 拿法人/信用代码（7 天缓存）→ `output/legal_pending_日期.md` 待核清单 → **人工查执行网**（失信/被执行/限高，验证码人点，结果按 `代码|法人|类型|案号|标的|立案日|原因` 格式回填）→ `--result` 导入 → Mongo `stock` 库 + 4 列附录表 `output/legal_risk_日期.md` | 补查「无披露」公司（未达披露标准的被执行） | ✅ |
+| **P1 企查查MCP** | qcc_legal_check.py（2026-09-15 上线，Windows 运行）：recommend TOP20 → F10画像 → 15天缓存过滤 → 企查查 MCP 精查 4 字段（工商信息/失信/被执行人/限高，4 积分/家×20=80 积分/天 < 每日赠送100）→ 风险报告 `output/qcc_legal_日期.md` + legal_risks 回写（source: qcc-mcp） | token 配置：tools/qcc-mcp-batch/config.json（登录 agent.qcc.com 领取，gitignore）；依赖 `pip install requests`；运行 `python scripts\qcc_legal_check.py [--date yyyymmdd] [--dry-run]` | ✅ 待 token |
+| ~~P1' 打码攻坚~~ | playwright + glm-4v-flash 查执行网 | 被企查查 MCP 方案替代 | ⏸ 搁置 |
+
+- P0 Mongo 表模型：`legal_companies`（画像，_id=股票代码）、`legal_risks`
   （唯一键 code+risk_type+case_no）、`legal_checks`（运行日志）；
   连接读 `MONGODB_URI`，不可用自动降级 `data/legal_fallback.jsonl`
 - 「无风险」记录写进画像的 last_checked（7 天内免重查），风险记录永久累积
+- **v0.8.1 关键改动**：signals 顺产改为「正分 TOP100 + 负分 TOP20」——
+  纯负面股（司法风险）此前进不了正序 TOP100，回避区永远看不到它们；
+  另 `SKIP_PRODUCTS=1` 跳过产品传导通道（网络差时全流程几分钟→30秒）
+- 巨潮诉讼类 category 参数无效（回退默认流），必须 searchkey（实测）
 
 ## 互动易 / 机构调研通道（2026-09-14 上线，批次二）
 

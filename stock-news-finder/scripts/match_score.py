@@ -24,6 +24,7 @@ SOURCE_NAMES = {
     "eastmoney-search": "东方财富搜索",
     "zhihu-pins": "知乎·关注",
     "cninfo-announce": "巨潮资讯",
+    "cninfo-legal": "司法风险",
     "sina-live": "新浪7x24",
     "longhubang": "龙虎榜",
     "irm-qa": "互动易",
@@ -45,6 +46,8 @@ EVENT_RULES = [
     (r"(并购|重组|借壳|收购)", 2.5, "并购重组"),
     (r"(涨停|大涨|飙升|暴涨)", 1.0, "已大涨(谨慎)"),
     (r"(下跌|暴跌|亏损|预减|减持|质押|立案|调查|处罚|退市)", -3.0, "负面"),
+    (r"(涉及诉讼|重大诉讼|诉讼.{0,4}进展|仲裁)", -2.5, "诉讼仲裁"),
+    (r"(股份.{0,6}被.{0,4}冻结|资金被冻结|司法拍卖|破产重整|清算)", -3.0, "资产风险"),
     (r"(龙虎榜).{0,30}(净买入)", 2.0, "资金异动"),
     (r"(龙虎榜).{0,30}(净卖出)", -2.0, "资金流出"),
     (r"(\d+)家机构调研", 1.8, "机构调研"),
@@ -127,9 +130,13 @@ def main():
             print(f"[warn] LLM 结果加载失败，回退正则: {e}", file=sys.stderr)
 
     # 产品传导通道：产品词 → 东财板块 → 成分股（当日缓存，解析失败不影响主流程）
+    # 网络差时整个通道拖慢主流程（每词 curl 多节点重试最长 90s）：
+    # 设环境变量 SKIP_PRODUCTS=1 可跳过（快速模式，只损失板块联动信号）
     product_terms = []
     ptxt = os.path.join(BASE, "data", "products.txt")
-    if os.path.exists(ptxt):
+    if os.environ.get("SKIP_PRODUCTS"):
+        print("产品通道: SKIP_PRODUCTS=1，本次跳过（快速模式）")
+    elif os.path.exists(ptxt):
         with open(ptxt, encoding="utf-8") as f:
             product_terms = [w.strip() for w in f if w.strip() and not w.startswith("#")]
     product_boards = {}  # word -> [(code,name)...] 或 None(解析失败)
@@ -212,7 +219,8 @@ def main():
                                    or _name_from_body(text, code) or code)
                 # 一手信息源权威加成：官方公告/交易所榜单/董秘口径/调研披露 > 新闻转述
                 auth = 1.5 if n.get("source") in (
-                    "cninfo-announce", "longhubang", "irm-qa", "org-survey") else 1.0
+                    "cninfo-announce", "longhubang", "irm-qa", "org-survey",
+                    "cninfo-legal") else 1.0
                 s = ew * conf * mw * d * auth
                 rec["score"] += s
                 if term == "官方标注":
@@ -324,7 +332,11 @@ def write_daily(ranked, news_count, news=None):
     print(f"→ {path}")
 
     # 结构化信号顺产（DB 同步/回测用）：output/signals_yyyymmdd.json
+    # 正分 TOP100 + 负分 TOP20（最负优先）：纯负面股（司法风险等）也要可见，
+    # 否则推荐层回避区永远看不到它们（负分进不了正序 TOP100）
     sig_path = os.path.join(BASE, "output", "signals_" + now.strftime("%Y%m%d") + ".json")
+    pos_rows = [r for r in ranked if r["score"] > 0][:100]
+    neg_rows = sorted([r for r in ranked if r["score"] <= 0], key=lambda r: r["score"])[:20]
     sig = [{
         "trade_date": now.strftime("%Y-%m-%d"),
         "rank": i, "code": r["code"], "name": r["name"],
@@ -332,7 +344,7 @@ def write_daily(ranked, news_count, news=None):
         "events": sorted({h["event"].split("] ")[-1] for h in r["hits"]}),
         "hits": r["hits"],
         "generated_at": now.strftime("%Y-%m-%d %H:%M:%S"),
-    } for i, r in enumerate(ranked[:100], 1)]
+    } for i, r in enumerate(pos_rows + neg_rows, 1)]
     with open(sig_path, "w", encoding="utf-8") as f:
         json.dump(sig, f, ensure_ascii=False, indent=1)
     print(f"→ {sig_path}（{len(sig)} 条信号）")

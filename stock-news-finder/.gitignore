@@ -1,0 +1,7 @@
+
+# 企查查 MCP（token/缓存/抓取输出，均不入库；路径相对本文件所在目录）
+tools/qcc-mcp-batch/config.json
+tools/qcc-mcp-batch/qcc_data_mcp/
+tools/qcc-mcp-batch/_progress.json*
+data/qcc_check_cache.json
+data/legal_fallback.jsonl

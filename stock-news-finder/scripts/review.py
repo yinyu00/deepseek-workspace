@@ -94,13 +94,17 @@ def main():
         q = quotes.get(r["code"])
         if not q or q["pct"] is None:
             continue
+        # 停牌股接口返回 price=0 占位数据，计入统计会失真（0.00%≠平盘）
+        if not q["price"]:
+            rows.append(dict(r, pct=None, price=0, hit=None))  # 展示但不进统计
+            continue
         hit = q["pct"] > 0
         t = tier_stat.setdefault(r["tier"], {"n": 0, "hit": 0, "pct_sum": 0.0})
         t["n"] += 1
         t["hit"] += 1 if hit else 0
         t["pct_sum"] += q["pct"]
         rows.append(dict(r, pct=q["pct"], price=q["price"], hit=hit))
-    rows.sort(key=lambda x: -x["pct"])
+    rows.sort(key=lambda x: -(x["pct"] if x["pct"] is not None else -99))
 
     # ---- 累计统计 ----
     stats = {"days": 0, "tier": {}}
@@ -126,8 +130,10 @@ def main():
     L = [f"# 推荐复盘 {date8}（行情截至 {now:%Y-%m-%d %H:%M}）", "",
          "| 档 | 名称 | 代码 | 推荐分 | 最新涨跌 | 结果 |", "|---|---|---|---:|---:|---|"]
     for r in rows:
+        pct_s = f"{r['pct']:+.2f}%" if r["pct"] is not None else "停牌"
+        res = ("✅" if r["hit"] else "❌") if r["hit"] is not None else "暂停"
         L.append(f"| {'★' * r['stars']} | {r['name']} | {r['code']} | {r['r_score']:.1f} | "
-                 f"{r['pct']:+.2f}% | {'✅' if r['hit'] else '❌'} |")
+                 f"{pct_s} | {res} |")
     L += ["", "## 分档统计（当日 / 累计）", "",
           "| 档 | 当日命中 | 当日均涨 | 累计命中 | 累计均涨 |", "|---|---|---:|---|---:|"]
     for tier in ("强推", "关注", "观察"):
@@ -146,7 +152,8 @@ def main():
     print(f"→ {md_path}")
     print(f"→ {STATS}（累计 {stats['days']} 个交易日）")
     for r in rows[:8]:
-        print(f"{'★' * r['stars']} {r['pct']:+6.2f}%  {r['code']} {r['name']}")
+        pct_s = f"{r['pct']:+6.2f}%" if r["pct"] is not None else "  停牌 "
+        print(f"{'★' * r['stars']} {pct_s}  {r['code']} {r['name']}")
 
 
 if __name__ == "__main__":

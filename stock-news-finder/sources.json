@@ -76,5 +76,18 @@
     "min_orgs": 3,
     "lookback_days": 3,
     "_comment": "机构关注度先行指标,>=3家机构,董事长接待标记"
+  },
+  {
+    "name": "巨潮-司法风险公告",
+    "type": "cninfo-legal",
+    "enabled": true,
+    "search_words": [
+      "诉讼",
+      "冻结",
+      "破产重整",
+      "司法拍卖"
+    ],
+    "lookback_days": 30,
+    "_comment": "公司自披露司法风险(诉讼/冻结/破产),自动预警+推荐回避"
   }
 ]

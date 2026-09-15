@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+
+# 抓取产物（每个用户自己跑出来的数据，不进仓库）
+qcc_data_mcp/
+*.log
+
+# 用户本地配置（如果同学填了真 token 后想用 git，建议把 config.json 也加进自己的本地 .gitignore）
+config.json.local
+config.json.bak
+*.token
+
+# IDE / 编辑器
+.vscode/
+.idea/
+*.swp
+*~
+
+# 系统
+.DS_Store
+Thumbs.db
+desktop.ini

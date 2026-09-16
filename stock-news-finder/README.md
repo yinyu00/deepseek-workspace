@@ -49,6 +49,9 @@ python3 scripts/import_sz.py            # 深市词典导入（已导入过则�
 python3 scripts/lookup.py 立讯精密       # 公司名查代码
 python3 scripts/legal_check.py          # 法人风险：TOP30 画像拉取 + 待核清单生成
 python3 scripts/legal_check.py --result output/legal_pending_日期.md   # 人工核查结果入库 + 附录表
+python3 scripts/ent_mine.py             # 实体累积：今日新闻→ent_company_news（每日跑）
+python3 scripts/ent_mine.py --backfill  # 历史归档一次性回填
+python3 scripts/ent_mine.py --seed-person  # F10法人→ent_person_company 官方种子
 ```
 
 ## 法人司法风险层（三级防线）

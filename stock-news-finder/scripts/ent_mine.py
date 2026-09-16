@@ -111,7 +111,7 @@ LLM_PROMPT = """你是A股新闻分析师。判断下面每条候选是否为「
 事件枚举（选其一）：司法风险(被查/逮捕/限高/失信/处罚)、人事变动(辞任/聘任)、增减持(减持/增持/质押)、观点言论、其他
 
 输出 JSON 数组：
-[{"id": 编号, "is_person": true/false, "event": "类型", "reason": "8字内理由"}]
+[{{"id": 编号, "is_person": true/false, "name": "从原文提取的完整真实姓名(is_person=false时空串)", "event": "类型", "reason": "8字内理由"}}]
 
 候选列表（格式：[id] 候选名 | 标题 | 正文片段）：
 {items}"""
@@ -213,6 +213,11 @@ def mine_person_news(db, news_list, matcher, trade_date, known=None, dry=False, 
             v = verdicts.get(i) or {}
             if v.get("is_person"):
                 r["confidence"] = "llm_verified"
+                # LLM 修正碎片名（"陈刚任中"→陈刚、"任在"→任在栋）
+                fixed = str(v.get("name") or "").strip()
+                if 2 <= len(fixed) <= 4 and fixed != r["person_name"]:
+                    r["name_raw_extract"] = r["person_name"]  # 保留痕迹
+                    r["person_name"] = fixed
                 r["person_event"] = v.get("event") or r["person_event"]
                 r["reason"] = v.get("reason", "")
                 stats["llm_ok"] += 1

@@ -54,6 +54,38 @@ EVENT_RULES = [
     (r"互动易", 1.0, "互动易回复"),
 ]
 DECAY_HOURS = 72.0  # 时效半衰期：3 天
+HITL_PENDING = {}   # classify 收集的待判定 {(url,事件): 详情}，main 末尾写文件
+HITL_LABELS_LOADED = {}
+
+# ---- HITL 语义歧义闭环（F4.7）：负面事件命中否定/澄清语境 → 挂起待人工判定 ----
+NEG_EVENT_NAMES = {"负面", "诉讼仲裁", "资产风险", "资金流出"}
+AMBIG_CTX = re.compile(r"(未|不是|不再|没有|澄清|否认|不存在|否认知情|传闻|媒体报道)")
+# 人工判定 → (权重, 事件名)；"负" 维持原值
+HITL_JUDGE = {"正": (2.0, "人工确认正面"), "中性": (0.0, "澄清/中性")}
+HITL_LABELS = os.path.join(BASE, "data", "hitl_labels.jsonl")
+
+
+def load_hitl_labels():
+    """标注库：{(url或标题, 事件名): 正/负/中性}（hitl_review.py --import 维护）。"""
+    out = {}
+    if os.path.exists(HITL_LABELS):
+        for line in open(HITL_LABELS, encoding="utf-8"):
+            try:
+                r = json.loads(line)
+                out[(r.get("key") or "", r.get("event") or "")] = r.get("judgment", "")
+            except Exception:
+                pass
+    return out
+
+
+def is_ambiguous(text, pattern):
+    """负面事件词命中处前 30 字窗口含否定/澄清语境 → 语义歧义（需人工）。
+    30 字依据：'公司未直接或通过控制主体间接参与XX的破产重整'类长否定（实测案例）。"""
+    for m in re.finditer(pattern, text):
+        ctx = text[max(0, m.start() - 30):m.start() + len(m.group(0)) + 5]
+        if AMBIG_CTX.search(ctx):
+            return True
+    return False
 
 
 def build_matcher():
@@ -92,17 +124,50 @@ def _name_from_body(text, code):
     return m.group(1) if m else None
 
 
-def classify(text):
+def classify(text, news=None, labels=None, codes=None):
+    """正则事件分类（含 HITL：负面歧义挂起/标注生效）。
+
+    labels 键 = (股票代码, 事件名)（hitl_labels.jsonl 粒度契约：同一公司
+    同类事件的判定一致）。codes = 本条新闻命中的股票集，任一命中即生效。
+    """
     hits = []
     for pat, w, name in EVENT_RULES:
-        if re.search(pat, text):
-            hits.append((w, name))
+        if not re.search(pat, text):
+            continue
+        if w < 0 and name in NEG_EVENT_NAMES and news is not None:
+            judged = None
+            for c in (codes or []):
+                judged = (labels or {}).get((c, name))
+                if judged:
+                    break
+            if judged in HITL_JUDGE:
+                jw, jname = HITL_JUDGE[judged]
+                hits.append((jw, jname))
+                continue
+            if judged != "负" and is_ambiguous(text, pat):
+                HITL_PENDING.setdefault((news.get("url") or news.get("title") or "", name), {
+                    "title": news.get("title", ""), "event": name,
+                    "suspended": round(w, 2), "source": news.get("source", ""),
+                    "stocks": [c for c in (codes or [])][:5] or list(news.get("stocks") or [])[:5],
+                    "text": text[:160],
+                    "body": news.get("body", ""),          # 完整原文（判断依据）
+                    "url": news.get("url", ""),
+                    "time": news.get("time", ""),
+                    "pattern": pat,                          # 命中的风险词模式（歧义证据）
+                })
+                hits.append((0.0, name + "(待判定)"))
+                continue
+        hits.append((w, name))
     if not hits:
         hits.append((0.5, "一般资讯"))
     return hits
 
 
 def main():
+    global HITL_LABELS_LOADED
+    HITL_LABELS_LOADED = load_hitl_labels()
+    if HITL_LABELS_LOADED:
+        print(f"HITL 标注库: {len(HITL_LABELS_LOADED)} 条生效")
     with open(NEWS, encoding="utf-8") as f:
         news = json.load(f)
     terms = build_matcher()
@@ -206,7 +271,8 @@ def main():
                 item.get("reason", ""),
             ) for item in llm_items]
         else:
-            events = [(ew, ename, 1.0, "") for ew, ename in classify(text)]
+            events = [(ew, ename, 1.0, "") for ew, ename in
+                      classify(text, n, HITL_LABELS_LOADED, matched.keys())]
         for code, (term, mw) in matched.items():
             for ew, ename, conf, reason in events:
                 key = (ename, ew > 0)
@@ -274,6 +340,87 @@ def main():
     for r in ranked[:10]:
         print(f"{r['score']:7.1f}  {r['code']} {r['name']}")
     write_daily(ranked, len(news), news)
+    write_hitl_pending()
+
+
+def hitl_prejudge(items):
+    """LLM 预判（公司/法人两维度）供人工参考。失败降级规则版。
+
+    items: [{title, body, event}] -> [{"company","person","reason"}]（与输入等长）。
+    """
+    fallback = [{"company": "倾向中性", "person": "不涉及", "reason": "LLM不可用·歧义默认"}
+                for _ in items]
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from llm_classify import get_key, call_llm, parse_json_loose
+        key = get_key()
+        if not key:
+            return fallback
+    except Exception:
+        return fallback
+    prompt_t = (
+        "你是A股分析师。对下面每条「负面事件被否定/澄清语境修饰」的新闻，"
+        "从两个维度预判影响方向：\n"
+        "- company 公司维度：该新闻对公司(股票)层面是 正面/负面/中性\n"
+        "- person 法人维度：对该公司法定代表人/高管个人的风险含义是 正面/负面/中性/不涉及\n"
+        "输出 JSON 数组：\n"
+        '[{{"id": 编号, "company": "正面/负面/中性", "person": "正面/负面/中性/不涉及", '
+        '"reason": "15字内"}}]\n'
+        "新闻：\n{items}")
+    news_str = "\n".join(f"[{i}] {it['title']} | {it['body'][:200]}"
+                         for i, it in enumerate(items))
+    try:
+        raw = call_llm(prompt_t.format(items=news_str), key)
+    except Exception as e:
+        print(f"[warn] HITL 预判 LLM 失败，用默认: {e}", file=sys.stderr)
+        return fallback
+    out = list(fallback)
+    for r in parse_json_loose(raw):
+        if isinstance(r, dict) and isinstance(r.get("id"), int) and 0 <= r["id"] < len(out):
+            out[r["id"]] = {"company": str(r.get("company", "?"))[:6],
+                            "person": str(r.get("person", "?"))[:6],
+                            "reason": str(r.get("reason", ""))[:20]}
+    return out
+
+
+def write_hitl_pending():
+    """HITL 待判定清单：output/hitl_pending_日期.md（人工回填后 hitl_review.py --import）。
+
+    模板：预判三列（公司/法人/理由，LLM 生成，用户勿动）在 #判定结果/#判定原因 前作参考。
+    """
+    if not HITL_PENDING:
+        return
+    now = datetime.now()
+    date8 = now.strftime("%Y%m%d")
+    path = os.path.join(BASE, "output", f"hitl_pending_{date8}.md")
+    L = [f"# HITL 待判定 {date8}", "",
+         f"> {len(HITL_PENDING)} 条负面事件命中否定/澄清语境，负分已挂起（未计入综合分）。",
+         "> 判定方法：把 `#判定结果` 占位符改为 正 / 负 / 中性；`#判定原因` 填简短原因（学习语料）。",
+         "> 预判三列（公司/法人/理由）为系统参考，请勿改动。保存后执行：",
+         "> `python3 scripts/hitl_review.py --import {本文件路径}`，再重跑当日打分生效。", "",
+         "| 编号 | 股票 | 初判事件 | 挂起分 | 关键句 | 预判-公司 | 预判-法人 | 预判理由 | #判定结果 | #判定原因 |",
+         "|---|---|---|---:|---|---|---|---|---|---|"]
+    pend = sorted(HITL_PENDING.items())
+    pre = hitl_prejudge([{"title": p["title"], "body": p.get("body", ""), "event": p["event"]}
+                         for _, p in pend])
+    for i, ((key, ev), p) in enumerate(pend):
+        codes = ",".join(p["stocks"]) or "—"
+        snippet = p["text"].replace("\n", " ")[:60]
+        j = pre[i] if i < len(pre) else {}
+        L.append(f"| P{i+1} | {codes} | {p['event']} | {p['suspended']} | {snippet} | "
+                 f"{j.get('company', '—')} | {j.get('person', '—')} | {j.get('reason', '')} | "
+                 f"#判定结果 | #判定原因 |")
+    L += ["", "## 原文详情（判断依据）", ""]
+    for i, ((key, ev), p) in enumerate(pend):
+        src = SOURCE_NAMES.get(p["source"], p["source"])
+        L += [f"### P{i+1} {p['title']}", "",
+              f"- **股票**: {','.join(p['stocks']) or '—'} | **初判**: {p['event']}（挂起 {p['suspended']}）",
+              f"- **来源**: {src} {p.get('time', '')}",
+              f"- **歧义证据**: 风险词命中 `{p.get('pattern', '')}`，前 30 字含否定/澄清语境",
+              f"- **链接**: {p.get('url') or '无'}", "", "**原文**:", "", p.get("body") or "（无正文）", ""]
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(L))
+    print(f"→ {path}（{len(HITL_PENDING)} 条待人工判定）")
 
 
 def write_daily(ranked, news_count, news=None):

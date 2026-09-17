@@ -89,5 +89,12 @@
     ],
     "lookback_days": 30,
     "_comment": "公司自披露司法风险(诉讼/冻结/破产),自动预警+推荐回避"
+  },
+  {
+    "name": "人民法院公告网",
+    "type": "rmfygg-notice",
+    "enabled": true,
+    "max_pages": 6,
+    "_comment": "法院公告(送达/开庭/破产/清算),破产类全收+送达类需A股关联"
   }
 ]

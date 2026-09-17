@@ -61,7 +61,7 @@ python3 scripts/ent_mine.py --seed-person  # F10法人→ent_person_company 官�
 | **P0.5 自动** | 巨潮 searchkey 司法风险公告（`cninfo-legal`，2026-09-15 上线）：诉讼/冻结/破产重整/司法拍卖全文搜索，30 天窗口 | 公司自披露 → 负面事件（诉讼仲裁-2.5/资产风险-3.0）→ 推荐回避区 | ✅ 91条/30天，78 只股自动预警 |
 | **P0 半自动** | legal_check.py（2026-09-15 上线）：`signals` TOP30 → 东财 F10 拿法人/信用代码（7 天缓存）→ `output/legal_pending_日期.md` 待核清单 → **人工查执行网**（失信/被执行/限高，验证码人点，结果按 `代码|法人|类型|案号|标的|立案日|原因` 格式回填）→ `--result` 导入 → Mongo `stock` 库 + 4 列附录表 `output/legal_risk_日期.md` | 补查「无披露」公司（未达披露标准的被执行） | ✅ |
 | **P1 企查查MCP** | qcc_legal_check.py（2026-09-15 上线，Windows 运行）：recommend TOP20 → F10画像 → 15天缓存过滤 → 企查查 MCP 精查 4 字段（工商信息/失信/被执行人/限高，4 积分/家×20=80 积分/天 < 每日赠送100）→ 风险报告 `output/qcc_legal_日期.md` + legal_risks 回写（source: qcc-mcp） | token 配置：tools/qcc-mcp-batch/config.json（登录 agent.qcc.com 领取，gitignore）；依赖 `pip install requests`；运行 `python scripts\qcc_legal_check.py [--date yyyymmdd] [--dry-run]` | ✅ 待 token |
-| ~~P1' 打码攻坚~~ | playwright + glm-4v-flash 查执行网 | 被企查查 MCP 方案替代 | ⏸ 搁置 |
+| **P1'' 执行网全自动** | zxgk_check.py（2026-09-17 立项，方案 A）：playwright 真浏览器过瑞数 + GLM-4v-flash 单图识别滑块缺口（⚠️双图并发触发 16K 限制 400）+ 拟人轨迹（easeOut+y抖动）→ searchSX 会话复用批量查询 → legal_risks(source: zxgk-auto) + 15天缓存 | Windows：`pip install playwright && playwright install chromium`；运行 `python scripts\zxgk_check.py [--one 名字|--names a,b]`；滑块3次失败自动提示转人工 | 🔨 Mac 审计通过待 Windows 实测 |
 
 - P0 Mongo 表模型：`legal_companies`（画像，_id=股票代码）、`legal_risks`
   （唯一键 code+risk_type+case_no）、`legal_checks`（运行日志）；

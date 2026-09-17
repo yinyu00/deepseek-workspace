@@ -5,3 +5,4 @@ tools/qcc-mcp-batch/qcc_data_mcp/
 tools/qcc-mcp-batch/_progress.json*
 data/qcc_check_cache.json
 data/legal_fallback.jsonl
+data/zxgk_check_cache.json

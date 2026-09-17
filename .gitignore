@@ -24,3 +24,4 @@ stock-news-finder/data/report_calendar_cache.json
 .ssh_known_hosts
 stock-news-finder/daily/
 stock-news-finder/raw/
+worklog-*.md

@@ -110,21 +110,9 @@ description: 当前用户（jinwei）的偏好与环境画像。任何新会话�
   stock-news-finder Windows 迁移跑通（file.py 跨平台修复、llm_classify.py
   SSL降级、output/ 改为不入库）。数据断档：raw/daily 缺 2026-08-29 ~ 09-12
   （游标只能回补约4个交易日）
-- 2026-09-14 服务操作经验：本机 DoSvc（Delivery Optimization）用 `sc config`
-  改配置即使管理员也报错误5（SCM 层保护，非注册表 ACL）；绕过方法=管理员
-  PowerShell 直接 `Set-ItemProperty HKLM:\SYSTEM\CurrentControlSet\Services\DoSvc
-  Start=4`，工具脚本 workspace\disable_dosvc.ps1（纯 ASCII——PS 5.1 按 GBK
-  读无 BOM 的 UTF-8 脚本会乱码炸语法）。大版本更新可能重置，重跑即可
-- 2026-09-14 桌面美化：快捷方式小箭头已去除，**最终成功方法**=
-  管理员设置 `HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons`
-  的字符串值 `29` = `C:\Windows\System32\shell32.dll,-50`（系统自带空白图标资源），
-  然后清 IconCache（%LOCALAPPDATA%\IconCache.db + Explorer\iconcache*）并重启
-  explorer。工具脚本 workspace\fix_arrow_overlay_v4.ps1。**踩坑记录**：
-  ① 重命名/删 `HKCR\lnkfile\IsShortcut` 在 Win11 26100 会让任务栏固定项报
-  "没有关联的应用"（桌面不受影响），勿用；② 自定义透明 ico 会被 Explorer 判
-  无效回退默认箭头（v2 白块=掩码写反，v3 全透明=回退），先试系统资源再考虑
-  自制。恢复箭头=删 Shell Icons\29。功能更新可能重置，重跑 v4 脚本即可。
-  另：git push 在沙箱内因 ssh 命名管道被禁需提权重试
+- 2026-09-14 Windows 调优经验沉淀为独立 skill `dsh-win-tweaks`（去箭头终版
+  方案 shell32.dll,-50 / 服务禁用注册表直写绕 SCM / 自启清理与沙箱提权 /
+  ASCII 脚本等通用坑，含失败路线避雷与工具脚本索引）——同类操作先查该 skill
 - 2026-09-14 web_search 已可用（DEEPSEEK_API_KEY 已由用户在 Models 页配好并
   验证）。此前不可用期间离线答新版 Windows 玄学问题容易绕弯——同类问题以后
   先搜索再动手

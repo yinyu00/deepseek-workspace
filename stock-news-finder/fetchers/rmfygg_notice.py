@@ -16,12 +16,17 @@
 - 会话：先 GET 列表页拿 JSESSIONID 再 POST（cookie 失效表现同空 data）
 """
 import datetime as _dt
+import http.cookiejar
 import json
 import re
+import ssl
 import subprocess
 import sys
+import tempfile
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 
 SOURCE = "rmfygg-notice"
 BASE_URL = "https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo"
@@ -37,11 +42,36 @@ DISHONEST_CTX = re.compile(r"(失信|被执行|限制消费|限制高消费)")
 def _curl(args, timeout=20):
     r = subprocess.run(["curl", "-s", "-m", str(timeout), "--noproxy", "*"] + args,
                        capture_output=True, text=True)
-    return r.stdout
+    return r.stdout if r.returncode == 0 else ""
+
+
+# ---- urllib 兜底通道（Windows：curl schannel 对本域 TLS 失败 rc=35，D5 家族问题）----
+_URNET = {"use": False, "jar": None}
+
+
+def _urlopen(url, data=None, headers=None):
+    """urllib + CookieJar 会话；SSL 失败自动降级（unverified + SECLEVEL=1）。"""
+    if _URNET["jar"] is None:
+        _URNET["jar"] = http.cookiejar.CookieJar()
+    op = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(_URNET["jar"]))
+    req = urllib.request.Request(url, data=data, headers=headers or {"User-Agent": UA})
+    try:
+        with op.open(req, timeout=20) as r:
+            return r.read().decode("utf-8", "ignore")
+    except ssl.SSLError:
+        pass
+    except urllib.error.URLError as e:
+        if not isinstance(getattr(e, "reason", None), ssl.SSLError):
+            raise
+    ctx = ssl._create_unverified_context()
+    ctx.set_ciphers("DEFAULT@SECLEVEL=1")
+    with op.open(req, timeout=20, context=ctx) as r:
+        return r.read().decode("utf-8", "ignore")
 
 
 def _fetch_page(cookie, start=0, length=15):
-    """拉一页公告列表。返回 data 数组（空=会话失效或被风控）。"""
+    """拉一页公告列表。curl 优先（Mac），失败（Windows schannel TLS）切 urllib 会话。
+    返回 data 数组（空=会话失效或被风控）。"""
     ao = [{"name": "sEcho", "value": 3}, {"name": "iColumns", "value": 6},
           {"name": "sColumns", "value": ",,,,,,,"},
           {"name": "iDisplayStart", "value": start},
@@ -60,25 +90,38 @@ def _fetch_page(cookie, start=0, length=15):
         "_noticelist_WAR_rmfynoticeListportlet_isWebCountNotice": "",
         "_noticelist_WAR_rmfynoticeListportlet_aoData": json.dumps(ao),
     }
-    body = _curl([
-        "-c", cookie, "-b", cookie,
-        "--url", BASE_URL + "?" + urllib.parse.urlencode({
-            "p_p_id": "noticelist_WAR_rmfynoticeListportlet",
-            "p_p_lifecycle": "2", "p_p_state": "normal", "p_p_mode": "view",
-            "p_p_resource_id": "initNoticeList",
-            "p_p_cacheability": "cacheLevelPage",
-            "p_p_col_id": "column-1", "p_p_col_count": "1"}),
-        "-H", "accept: application/json, text/javascript, */*; q=0.01",
-        "-H", "accept-language: zh-CN,zh;q=0.9,en;q=0.8",
-        "-H", "content-type: application/x-www-form-urlencoded; charset=UTF-8",
-        "-H", "origin: https://rmfygg.court.gov.cn",
-        "-H", "referer: https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo",
-        "-H", f"user-agent: {UA}",
-        "-H", "x-requested-with: XMLHttpRequest",
-        "-H", 'sec-fetch-dest: empty', "-H", "sec-fetch-mode: cors",
-        "-H", "sec-fetch-site: same-origin",
-        "--data-raw", urllib.parse.urlencode(form, quote_via=urllib.parse.quote),
-    ])
+    url = BASE_URL + "?" + urllib.parse.urlencode({
+        "p_p_id": "noticelist_WAR_rmfynoticeListportlet",
+        "p_p_lifecycle": "2", "p_p_state": "normal", "p_p_mode": "view",
+        "p_p_resource_id": "initNoticeList",
+        "p_p_cacheability": "cacheLevelPage",
+        "p_p_col_id": "column-1", "p_p_col_count": "1"})
+    headers = {
+        "accept": "application/json, text/javascript, */*; q=0.01",
+        "accept-language": "zh-CN,zh;q=0.9,en;q=0.8",
+        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "origin": "https://rmfygg.court.gov.cn",
+        "referer": "https://rmfygg.court.gov.cn/web/rmfyportal/noticeinfo",
+        "user-agent": UA,
+        "x-requested-with": "XMLHttpRequest",
+        "sec-fetch-dest": "empty", "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-origin",
+    }
+    body = ""
+    if not _URNET["use"]:
+        body = _curl([
+            "-c", cookie, "-b", cookie, "--url", url,
+            *sum([["-H", f"{k}: {v}"] for k, v in headers.items()], []),
+            "--data-raw", urllib.parse.urlencode(form, quote_via=urllib.parse.quote),
+        ])
+    if not body:
+        # curl 通道失败（Windows TLS）→ urllib 会话（CookieJar 自动管 JSESSIONID）
+        _URNET["use"] = True
+        if not _URNET.get("warmed"):
+            _urlopen(BASE_URL)  # 会话预热（等价原 curl -c 首访）
+            _URNET["warmed"] = True
+        body = _urlopen(url, data=urllib.parse.urlencode(form).encode("utf-8"),
+                        headers=headers)
     try:
         return json.loads(body).get("data") or []
     except Exception:
@@ -118,10 +161,11 @@ def fetch(cfg: dict) -> list:
     import os
     stop_date = cfg.get("_stop_date") or _dt.date.today().strftime("%Y-%m-%d")
     max_pages = int(cfg.get("max_pages", 4))
-    cookie = os.path.join("/tmp", f"rmfygg_ck_{os.getpid()}.txt")
-    # 会话预热（JSESSIONID）
-    _curl(["-c", cookie, "--url", BASE_URL, "-H", f"user-agent: {UA}"])
+    cookie = os.path.join(tempfile.gettempdir(), f"rmfygg_ck_{os.getpid()}.txt")
     terms = _dict_matcher()
+    if not _URNET["use"]:
+        # 会话预热（JSESSIONID）——curl 通道专用；urllib 通道在 _fetch_page 内预热
+        _curl(["-c", cookie, "--url", BASE_URL, "-H", f"user-agent: {UA}"])
 
     items, seen = [], set()
     for page in range(max_pages):

@@ -11,32 +11,50 @@
 
 ```
 stock-news-finder/
-├── scripts/              # 全部可执行脚本
-│   ├── run.sh            # 一键全流程（4 步）
-│   ├── cron_run.sh       # 备用入口（带日志）
-│   ├── fetch_news.py     # 采集层 loader（动态加载插件）
-│   ├── build_dict.py     # 词典构建
-│   ├── import_excel.py   # Excel 公司清单导入
-│   ├── import_sz.py      # 深市公司全量导入
-│   ├── llm_classify.py   # LLM 事件分类
-│   ├── match_score.py    # 匹配打分 + 日报生成
-│   ├── recommend.py      # 推荐层：信号提纯 + 三档推荐（★强推/★关注/★观察）
-│   ├── review.py         # 验证层：次日行情复盘 + 分档命中率累计统计
-│   ├── lookup.py         # 公司名→代码查询工具
-│   └── product_lookup.py # 产品词→板块成分股工具
-├── fetchers/             # 采集器插件（SPEC.md 为接口规范）
-│   ├── eastmoney_fast.py
-│   ├── wallstreetcn_live.py
-│   ├── http_json.py      # 通用模板
-│   └── file.py           # 本地文件模板
-├── sources.json          # 新闻源配置（动态添加）
-├── data/                 # 词典与缓存
-├── raw/                  # 新闻历史归档（按日）
-├── output/               # 当次运行产物
-├── daily/                # 信号日报归档（按日）
-├── 需求/需求.md          # 需求文档
-└── 方案/概要设计.md      # 概要设计文档
+├── scripts/                 # 全部可执行脚本
+│   ├── run.sh / cron_run.sh # 一键全流程 / 备用入口
+│   ├── fetch_news.py        # 采集层 loader（动态加载 11 源插件）
+│   ├── build_dict.py / import_sz.py / import_excel.py / lookup.py / expand_products.py
+│   ├── llm_classify.py      # LLM 事件分类（免费 glm-4v-flash，失败降级正则）
+│   ├── match_score.py       # 匹配打分 + 信号日报（含 HITL 歧义挂起）
+│   ├── recommend.py         # 推荐层（★强推/★关注/★观察 + 回避区 + 联动池）
+│   ├── review.py            # 验证层（次日行情复盘 + 命中率累计）
+│   ├── ent_mine.py          # 实体累积层①②③通道（公司新闻/人物/关联）
+│   ├── legal_check.py       # 法人风险 P0（画像 + 待核清单 + Mongo 入库）
+│   ├── qcc_legal_check.py   # 法人风险 P1（企查查 MCP 精查，Token 池）
+│   ├── hitl_review.py       # HITL 判定导入（标注库沉淀）
+│   ├── push_channels.py / push_daily.py / push_md.py / report_calendar.py
+│   ├── export_sync.py       # 跨机同步打包（JSONL → FTP）
+│   └── product_lookup.py    # 产品词→板块成分股
+├── scripts-win/import_to_mongo.py  # Windows 侧 Mongo 幂等导入
+├── fetchers/                # 采集器插件（SPEC.md 为接口规范，11 源 + 2 模板）
+├── tools/qcc-mcp-batch/     # 企查查 MCP 批量抓取工具（多账号 Token 池）
+├── sources.json             # 新闻源配置（动态添加）
+├── data/                    # 词典与缓存（companies/products/zhihu_people/macro 等）
+├── raw/                     # 新闻历史归档（按日）
+├── output/                  # 当次运行产物（不入库）
+├── daily/                   # 信号/推荐/复盘日报归档（按日）
+├── 需求/                    # 需求.md · 代办.md
+├── 方案/                    # 概要设计.md · 接口方案.md · Mongo数据模型.md · 流程图.md
+└── 维护/                    # 操作手册.md
 ```
+
+## 文档索引
+
+> **文档即事实源**：凭需求 + 方案两份文档可重建并运行整个项目。新会话/跨机接手从
+> `代办.md` 入手最快（活 backlog + 会话交接备忘）。
+
+| 文档 | 定位 | 关键内容 |
+|---|---|---|
+| [需求/需求.md](需求/需求.md) | **做什么**（唯一事实源①） | F 编号功能清单（3.1~3.10）、D 编号决策记录、R 编号风险 |
+| [需求/代办.md](需求/代办.md) | **接下来做什么** | P0/P1/P2 分级待办 + 完成归档（带提交号）+ 会话交接备忘 |
+| [方案/概要设计.md](方案/概要设计.md) | **为什么这样设计**（唯一事实源②） | 模块设计（2.1~2.12）、ent/legal 表模型、FastGPT 桥接、决策对照 |
+| [方案/接口方案.md](方案/接口方案.md) | 全部对外 HTTP API 契约 | 地址/出入参/报文样例/坑；接口编号 I-xx，**先改本文再写码** |
+| [方案/Mongo数据模型.md](方案/Mongo数据模型.md) | 数据库与跨机同步设计 | FTP 中转批量同步链路、文件第一事实源原则、幂等导入 |
+| [方案/流程图.md](方案/流程图.md) | 每日运行时数据流 | pipeline 全链路 mermaid（v0.9） |
+| [维护/操作手册.md](维护/操作手册.md) | 日常运维一站式手册 | 部署/测试验证清单/日常操作/排障速查（Windows 主力 · Mac 验证） |
+| [fetchers/SPEC.md](fetchers/SPEC.md) | 采集插件接口规范 | fetch(cfg)/selftest() 契约，新源零侵入 |
+| [tools/qcc-mcp-batch/README.md](tools/qcc-mcp-batch/README.md) | 企查查批量工具 | 67 字段清单、Token 池配置、积分模型、断点续爬 |
 
 ## 使用
 
